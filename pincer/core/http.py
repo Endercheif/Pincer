@@ -28,7 +28,8 @@ class HttpCallable(Protocol):
 
     def __call__(
             self, url: StrOrURL, *,
-            allow_redirects: bool = True, json: Dict = None, **kwargs: Any
+            allow_redirects: bool = True, json: Optional[Dict[str, Any]] = None,
+            **kwargs: Any
     ) -> _RequestContextManager:
         ...
 
@@ -36,7 +37,8 @@ class HttpCallable(Protocol):
 class HTTPClient:
     """Interacts with Discord API through HTTP protocol"""
 
-    def __init__(self, token: str, *, version: int = None, ttl: int = 5):
+    def __init__(self, token: str, *, version: Optional[int] = None,
+                 ttl: int = 5):
         """
         Instantiate a new HttpApi object.
 
@@ -87,9 +89,9 @@ class HTTPClient:
             self,
             method: HttpCallable,
             endpoint: str, *,
-            data: Optional[Dict] = None,
-            __ttl: int = None
-    ) -> Optional[Dict]:
+            data: Optional[Dict[str, Any]] = None,
+            __ttl: Optional[int] = None
+    ) -> Optional[Dict[str, Any]]:
         """
         Send an api request to the Discord REST API.
 
@@ -135,9 +137,9 @@ class HTTPClient:
             res: ClientResponse,
             method: HttpCallable,
             endpoint: str,
-            data: Optional[Dict],
+            data: Optional[Dict[str, Any]],
             __ttl: int,
-    ) -> Optional[Dict]:
+    ) -> Optional[Dict[str, Any]]:
         """
         Handle responses from the discord API.
 
@@ -168,14 +170,15 @@ class HTTPClient:
                 _log.debug(
                     "Request has been sent successfully. "
                 )
-                return
+                return None
 
             _log.debug(
                 "Request has been sent successfully. "
                 "Returning json response."
             )
 
-            return await res.json()
+            json: Dict[str, Any] = await res.json()
+            return json
 
         exception = self.__http_exceptions.get(res.status)
 
@@ -211,7 +214,7 @@ class HTTPClient:
         # try sending it again
         return await self.__send(method, endpoint, __ttl=__ttl - 1, data=data)
 
-    async def delete(self, route: str) -> Optional[Dict]:
+    async def delete(self, route: str) -> Optional[Dict[str, Any]]:
         """
         Sends a delete request to a Discord REST endpoint.
 
@@ -223,7 +226,7 @@ class HTTPClient:
         """
         return await self.__send(self.__session.delete, route)
 
-    async def get(self, route: str) -> Optional[Dict]:
+    async def get(self, route: str) -> Optional[Dict[str, Any]]:
         """
         Sends a get request to a Discord REST endpoint.
 
@@ -235,7 +238,7 @@ class HTTPClient:
         """
         return await self.__send(self.__session.get, route)
 
-    async def head(self, route: str) -> Optional[Dict]:
+    async def head(self, route: str) -> Optional[Dict[str, Any]]:
         """
         Sends a head request to a Discord REST endpoint.
 
@@ -247,7 +250,7 @@ class HTTPClient:
         """
         return await self.__send(self.__session.head, route)
 
-    async def options(self, route: str) -> Optional[Dict]:
+    async def options(self, route: str) -> Optional[Dict[str, Any]]:
         """
         Sends a options request to a Discord REST endpoint.
 
@@ -259,7 +262,8 @@ class HTTPClient:
         """
         return await self.__send(self.__session.options, route)
 
-    async def patch(self, route: str, data: Dict) -> Optional[Dict]:
+    async def patch(self, route: str, data: Dict[str, Any]) -> Optional[
+        Dict[str, Any]]:
         """
         Sends a patch request to a Discord REST endpoint.
 
@@ -274,7 +278,8 @@ class HTTPClient:
         """
         return await self.__send(self.__session.patch, route, data=data)
 
-    async def post(self, route: str, data: Dict) -> Optional[Dict]:
+    async def post(self, route: str, data: Dict[str, Any]) -> Optional[
+        Dict[str, Any]]:
         """
         Sends a post request to a Discord REST endpoint.
 
@@ -289,7 +294,8 @@ class HTTPClient:
         """
         return await self.__send(self.__session.post, route, data=data)
 
-    async def put(self, route: str, data: Dict) -> Optional[Dict]:
+    async def put(self, route: str, data: Dict[str, Any]) -> Optional[
+        Dict[str, Any]]:
         """
         Sends a put request to a Discord REST endpoint.
 

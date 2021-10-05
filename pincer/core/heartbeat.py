@@ -66,7 +66,7 @@ class Heartbeat:
             The received hello message from the Discord gateway.
         """
         _log.debug("Handling initial discord hello websocket message.")
-        cls.__heartbeat = payload.data.get("heartbeat_interval")
+        cls.__heartbeat = payload.data.get("heartbeat_interval") # type: ignore
 
         if not cls.__heartbeat:
             _log.error(

@@ -67,10 +67,10 @@ class GatewayDispatch:
         :return:
             A proper GatewayDispatch object.
         """
-        payload: Dict[str, Union[int, str, Dict[str, Any]]] = loads(payload)
+        _payload: Dict[str, Union[int, str, Dict[str, Any]]] = loads(payload)
         return cls(
-            payload.get("op"),
-            payload.get("d"),
-            payload.get("s"),
-            payload.get("t")
+            _payload.get("op"),
+            _payload.get("d"),
+            _payload.get("s"),
+            _payload.get("t")
         )
