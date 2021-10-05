@@ -75,7 +75,7 @@ class Timestamp:
 
         return datetime.now()
 
-    def __getattr__(self, key: str) -> int:
+    def __getattr__(self, key: str) -> int: # type: ignore
         return getattr(self.__time, key)
 
     def __str__(self) -> str:

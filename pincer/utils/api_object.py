@@ -6,14 +6,14 @@ from __future__ import annotations
 import copy
 from dataclasses import dataclass, fields, _is_dataclass_instance
 from enum import Enum
-from typing import Dict, Union, Generic, TypeVar, Any
+from typing import Dict, Union, TypeVar, Any, Tuple, List, Type
 
 from .types import MissingType
 
 T = TypeVar("T")
 
 
-def _asdict_ignore_none(obj: Generic[T]) -> Union[tuple, dict, T]:
+def _asdict_ignore_none(obj: T) -> Union[Tuple[Any, ...], List[Any], Dict[str, Any], T]:
     """
     Returns a dict from a dataclass that ignores
     all values that are None
@@ -72,7 +72,7 @@ class APIObject:
 
     @classmethod
     def from_dict(
-            cls: Generic[T],
+            cls: Type[T],
             data: Dict[str, Union[str, bool, int, Any]]
     ) -> T:
         """
@@ -84,7 +84,7 @@ class APIObject:
         # Disable inspection for IDE because this is valid code for the
         # inherited classes:
         # noinspection PyArgumentList
-        return cls(
+        return cls( # type: ignore
             **{
                 key: (
                     value.value if isinstance(value, Enum) else value
@@ -92,8 +92,8 @@ class APIObject:
             }
         )
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> Dict[str, Any]:
         """
         Transform the current object to a dictionary representation.
         """
-        return _asdict_ignore_none(self)
+        return _asdict_ignore_none(self) # type: ignore
