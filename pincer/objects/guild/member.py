@@ -15,6 +15,7 @@ from ...utils.timestamp import Timestamp
 from ...utils.types import MISSING
 
 if TYPE_CHECKING:
+    from datetime import datetime
     from ... import Client
     from ...utils.types import APINullable
 
@@ -80,10 +81,10 @@ class GuildMember(APIObject):
     user: APINullable[User] = MISSING
     avatar: APINullable[str] = MISSING
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.roles = convert(self.roles, Snowflake.from_string)
-        self.user = convert(self.user, User.from_dict, User, self._client)
-        self.premium_since = convert(
+        self.user: User = convert(self.user, User.from_dict, User, self._client)
+        self.premium_since: datetime = convert(
             self.premium_since, Timestamp.parse, Timestamp
         )
 

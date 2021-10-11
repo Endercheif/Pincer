@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum, auto, IntEnum
-from typing import Optional, List, overload, TYPE_CHECKING
+from typing import Optional, List, overload, TYPE_CHECKING, Dict, Any
 
 from .member import GuildMember
 from ..events.presence import PresenceUpdateEvent
@@ -529,7 +529,7 @@ class Guild(APIObject):
         )
 
     @classmethod
-    def from_dict(cls, data) -> Guild:
+    def from_dict(cls, data: Dict[str, Any]) -> Guild:
         """
         Instantiate a new guild from a dictionary.
 

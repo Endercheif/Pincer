@@ -5,13 +5,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import Any, Optional, List, TYPE_CHECKING
+from typing import Optional, List, TYPE_CHECKING, Union
 
 from ...utils.api_object import APIObject
 from ...utils.types import MISSING
 
 if TYPE_CHECKING:
     from ..guild.channel import Channel
+    from ..guild.overwrite import Overwrite
+    from ..guild.role import Role
     from ..user.integration import Integration
     from ..user import User
     from ..guild.webhook import Webhook
@@ -84,8 +86,8 @@ class AuditLogChange(APIObject):
     :param key:
         name of audit log change key
     """
-    new_value: Any
-    old_value: Any
+    new_value: Union[Snowflake, int, str, bool, List[Overwrite], List[Role]]
+    old_value: Union[Snowflake, int, str, bool, List[Overwrite], List[Role]]
     key: str
 
 

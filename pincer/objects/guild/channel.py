@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import Dict, Optional, List, TYPE_CHECKING, Union, overload
+from typing import Dict, Optional, List, TYPE_CHECKING, Union, overload, Any
 
 from ..._config import GatewayConfig
 from ...utils.api_object import APIObject
@@ -191,15 +191,15 @@ class Channel(APIObject):
 
     @overload
     async def edit(
-            self, *, name: str = None,
-            type: ChannelType = None,
-            position: int = None, topic: str = None, nsfw: bool = None,
-            rate_limit_per_user: int = None, bitrate: int = None,
-            user_limit: int = None,
-            permissions_overwrites: List[Overwrite] = None,
-            parent_id: Snowflake = None, rtc_region: str = None,
-            video_quality_mod: int = None,
-            default_auto_archive_duration: int = None
+            self, *, name: Optional[str] = None,
+            type: Optional[ChannelType] = None,
+            position: Optional[int] = None, topic: Optional[str] = None, nsfw: Optional[bool] = None,
+            rate_limit_per_user: Optional[int] = None, bitrate: Optional[int] = None,
+            user_limit: Optional[int] = None,
+            permissions_overwrites: Optional[List[Overwrite]] = None,
+            parent_id: Optional[Snowflake] = None, rtc_region: Optional[str] = None,
+            video_quality_mod: Optional[int] = None,
+            default_auto_archive_duration: Optional[int] = None
     ) -> Channel:
         ...
 
@@ -207,7 +207,7 @@ class Channel(APIObject):
         data = await self._http.patch(f"channels/{self.id}", kwargs)
         data.update(
             {
-                "_client": self.client,
+                "_client": self._client,
                 "_http": self._http,
                 "type": ChannelType(data.pop("type"))
             }
@@ -227,12 +227,12 @@ class TextChannel(Channel):
 
     @overload
     async def edit(
-            self, name: str = None, type: ChannelType = None,
-            position: int = None, topic: str = None, nsfw: bool = None,
-            rate_limit_per_user: int = None,
-            permissions_overwrites: List[Overwrite] = None,
-            parent_id: Snowflake = None,
-            default_auto_archive_duration: int = None
+            self, name: Optional[str] = None, type: Optional[ChannelType] = None,
+            position: Optional[int] = None, topic: Optional[str] = None, nsfw: Optional[bool] = None,
+            rate_limit_per_user: Optional[int] = None,
+            permissions_overwrites: Optional[List[Overwrite]] = None,
+            parent_id: Optional[Snowflake] = None,
+            default_auto_archive_duration: Optional[int] = None
     ) -> Union[TextChannel, NewsChannel]:
         ...
 
@@ -246,10 +246,10 @@ class VoiceChannel(Channel):
 
     @overload
     async def edit(
-            self, name: str = None, position: int = None, bitrate: int = None,
-            user_limit: int = None,
-            permissions_overwrites: List[Overwrite] = None,
-            rtc_region: str = None, video_quality_mod: int = None
+            self, name: Optional[str] = None, position: Optional[int] = None, bitrate: Optional[int] = None,
+            user_limit: Optional[int] = None,
+            permissions_overwrites: Optional[List[Overwrite]] = None,
+            rtc_region: Optional[str] = None, video_quality_mod: Optional[int] = None
     ) -> VoiceChannel:
         ...
 
@@ -268,11 +268,11 @@ class NewsChannel(Channel):
 
     @overload
     async def edit(
-            self, name: str = None, type: ChannelType = None,
-            position: int = None, topic: str = None, nsfw: bool = None,
-            permissions_overwrites: List[Overwrite] = None,
-            parent_id: Snowflake = None,
-            default_auto_archive_duration: int = None
+            self, name: Optional[str] = None, type: Optional[ChannelType] = None,
+            position: Optional[int] = None, topic: Optional[str] = None, nsfw: Optional[bool] = None,
+            permissions_overwrites: Optional[List[Overwrite]] = None,
+            parent_id: Optional[Snowflake] = None,
+            default_auto_archive_duration: Optional[int] = None
     ) -> Union[TextChannel, NewsChannel]:
         ...
 
