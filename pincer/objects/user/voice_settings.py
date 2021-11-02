@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, IntEnum
 from typing import List
 
 from ...utils.api_object import APIObject
@@ -56,7 +56,7 @@ class VoiceSettingsModeType(Enum):
     VOICE_ACTIVITY = "VOICE_ACTIVITY"
 
 
-class KeyTypes(Enum):
+class KeyTypes(IntEnum):
     """Represents a key type"""
 
     KEYBOARD_KEY = 0
