@@ -6,11 +6,10 @@ from .integration import (
     IntegrationExpireBehavior, IntegrationApplication, Integration
 )
 from .user import User, PremiumTypes, VisibilityType
-from .voice_settings import VoiceSettings
 from .voice_state import VoiceState
 
 __all__ = (
     "Connection", "Integration", "IntegrationApplication",
     "IntegrationExpireBehavior", "PremiumTypes", "User", "VisibilityType",
-    "VoiceSettings", "VoiceState"
+    "VoiceState"
 )

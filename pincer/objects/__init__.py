@@ -33,7 +33,6 @@ from .message.sticker import Sticker
 from .message.user_message import UserMessage, AllowedMentionTypes
 from .user import User
 from .user.integration import Integration
-from .user.voice_settings import VoiceSettings
 from .user.voice_state import VoiceState
 from .voice.region import VoiceRegion
 
@@ -47,5 +46,5 @@ __all__ = (
     "Reaction", "Role", "SelectMenu", "SelectOption", "StageInstance",
     "Sticker", "ThreadMember", "ThreadMetadata", "ThrottleInterface",
     "ThrottleScope", "User", "UserMessage", "UserMessage", "VoiceRegion",
-    "VoiceSettings", "VoiceState", "Webhook", "WelcomeScreen"
+    "VoiceState", "Webhook", "WelcomeScreen"
 )
