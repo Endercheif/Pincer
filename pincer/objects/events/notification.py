@@ -35,6 +35,3 @@ class NotificationCreateEvent(APIObject):
     icon_url: str
     title: str
     body: str
-    
-    def __post_init__(self):
-        self.message = UserMessage.from_dict(construct_client_dict(self._client, self.message))

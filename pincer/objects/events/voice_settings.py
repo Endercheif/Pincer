@@ -157,7 +157,3 @@ class VoiceSettingsUpdateEvent(APIObject):
     silence_warning: bool
     deaf: bool
     mute: bool
-    
-    def __post_init__(self):
-        self.input = VoiceSettingsInput.from_dict(construct_client_dict(self._client, self.input))
-        self.output = VoiceSettingsInput.from_dict(construct_client_dict(self._client, self.output))
