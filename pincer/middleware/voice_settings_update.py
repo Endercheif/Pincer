@@ -4,7 +4,7 @@
 """sent when the client's voice settings update"""
 
 from ..core.dispatch import GatewayDispatch
-from ..objects.user import VoiceSettings
+from ..objects.events.voice_settings import VoiceSettingsUpdateEvent
 from ..utils.conversion import construct_client_dict
 
 
@@ -20,7 +20,7 @@ async def voice_settings_update_middleware(self, payload: GatewayDispatch):
 
     """
     return "on_voice_settings_update", [
-        VoiceSettings.from_dict(construct_client_dict(self, payload.data))
+        VoiceSettingsUpdateEvent.from_dict(construct_client_dict(self, payload.data))
     ]
 
 

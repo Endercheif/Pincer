@@ -3,4 +3,24 @@
 
 """sent when the client joins a voice channel"""
 
-# TODO: Implement event
+from ..core.dispatch import GatewayDispatch
+from ..objects.events.voice import VoiceChannelSelectEvent
+from ..utils.conversion import construct_client_dict
+
+
+async def voice_channel_select_middleware(self, payload: GatewayDispatch):
+    """
+    Middleware for ``on_voice_channel_select`` event.
+
+    :param self:
+        The current client.
+
+    :param payload:
+        The data received from the voice channel select event.
+    """
+    return "on_voice_channel_select", [
+        VoiceChannelSelectEvent.from_dict(construct_client_dict(self, payload.data))
+    ]
+    
+def export():
+    return voice_channel_select_middleware

@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from enum import Enum, IntEnum
 from typing import List
 
+from ...utils.conversion import construct_client_dict
+
 from ...utils.api_object import APIObject
 
 
@@ -111,7 +113,7 @@ class VoiceSettingsMode(APIObject):
 
 
 @dataclass
-class VoiceSettings(APIObject):
+class VoiceSettingsUpdateEvent(APIObject):
     """
     Represents a user's voice settings
 
@@ -155,3 +157,7 @@ class VoiceSettings(APIObject):
     silence_warning: bool
     deaf: bool
     mute: bool
+    
+    def __post_init__(self):
+        self.input = VoiceSettingsInput.from_dict(construct_client_dict(self._client, self.input))
+        self.output = VoiceSettingsInput.from_dict(construct_client_dict(self._client, self.output))
