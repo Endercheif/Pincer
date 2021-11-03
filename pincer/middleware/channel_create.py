@@ -8,13 +8,19 @@ from pincer.utils.conversion import construct_client_dict
 
 
 def channel_create_middleware(self, payload: GatewayDispatch):
-    """
-    Middleware for ``on_channel_creation`` event.
+    """|coro|
 
-    :param client:
+    Middleware for ``on_channel_create`` event.
 
-    :param payload:
-        The data received from the ready event.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
+
+    payload : :class:`GatewayDispatch`
+        The data received from the channel create event.
+        
+    return :class:`Channel`
     """
 
     return "on_channel_creation", [

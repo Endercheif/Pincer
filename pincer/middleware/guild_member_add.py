@@ -24,12 +24,12 @@ async def guild_member_add_middleware(self, payload: GatewayDispatch):
 
     payload : :class:`GatewayDispatch`
         The data received from the guild member add event.
+        
+    return :class:`GuildMemberAddEvent`
     """
 
     return "on_guild_member_add", [
-        GuildMemberAddEvent.from_dict(
-            construct_client_dict(self, payload.data)
-        )
+        GuildMemberAddEvent.from_dict(construct_client_dict(self, payload.data))
     ]
 
 

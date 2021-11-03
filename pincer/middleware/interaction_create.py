@@ -19,11 +19,11 @@ _log = logging.getLogger(__name__)
 
 
 async def interaction_response_handler(
-        self,
-        command: Coro,
-        context: MessageContext,
-        interaction: Interaction,
-        kwargs: Dict[str, Any]
+    self,
+    command: Coro,
+    context: MessageContext,
+    interaction: Interaction,
+    kwargs: Dict[str, Any],
 ):
     """
     Handle any coroutine as a command.
@@ -70,10 +70,7 @@ async def interaction_response_handler(
 
 
 async def interaction_handler(
-        self,
-        interaction: Interaction,
-        context: MessageContext,
-        command: Coro
+    self, interaction: Interaction, context: MessageContext, command: Coro
 ):
     """
     Processes an interaction.
@@ -96,26 +93,27 @@ async def interaction_handler(
     params = {}
 
     if interaction.data.options is not MISSING:
-        params = {
-            opt.name: opt.value for opt in interaction.data.options
-        }
+        params = {opt.name: opt.value for opt in interaction.data.options}
 
     kwargs = {**defaults, **params}
 
-    await interaction_response_handler(self, command, context, interaction,
-                                       kwargs)
+    await interaction_response_handler(self, command, context, interaction, kwargs)
 
 
 async def interaction_create_middleware(self, payload: GatewayDispatch):
-    """
-    Middleware for ``on_interaction``, which handles command
-    execution.
+    """|coro|
 
-    :param self:
-        The current client.
+    Middleware for ``on_interaction_create`` event, which handles command execution.
 
-    :param payload:
-        The data received from the interaction event.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
+
+    payload : :class:`GatewayDispatch`
+        The data received from the interaction create event.
+        
+    return :class:`Interaction`
     """
 
     interaction: Interaction = Interaction.from_dict(
@@ -128,8 +126,7 @@ async def interaction_create_middleware(self, payload: GatewayDispatch):
         context = interaction.convert_to_message_context(command)
 
         try:
-            await interaction_handler(self, interaction, context,
-                                      command.call)
+            await interaction_handler(self, interaction, context, command.call)
         except Exception as e:
             if coro := get_index(self.get_event_coro("on_command_error"), 0):
                 params = get_signature_and_params(coro)[1]
@@ -142,7 +139,7 @@ async def interaction_create_middleware(self, payload: GatewayDispatch):
                         context,
                         interaction,
                         # Always take the error parameter its name.
-                        {params[(len(params) - 1) or 0]: e}
+                        {params[(len(params) - 1) or 0]: e},
                     )
                 else:
                     raise e

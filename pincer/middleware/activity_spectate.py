@@ -11,21 +11,23 @@ from ..core.dispatch import GatewayDispatch
 
 
 async def activity_spectate_middleware(self, payload: GatewayDispatch):
-    """
+    """|coro|
+
     Middleware for ``on_activity_spectate`` event.
 
-    :param self:
-        The current client.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
 
-    :param payload:
+    payload : :class:`GatewayDispatch`
         The data received from the activity spectate event.
+        
+    return :class:`str`
     """
     secret: str = payload.data.get("secret")
-    return "on_activity_spectate", [
-        secret
-    ]
+    return "on_activity_spectate", [secret]
+
 
 def export():
     return activity_spectate_middleware
-
-

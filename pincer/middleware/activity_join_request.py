@@ -9,18 +9,24 @@ from ..core.dispatch import GatewayDispatch
 
 
 async def activity_join_request_middleware(self, payload: GatewayDispatch):
-    """
+    """|coro|
+
     Middleware for ``on_activity_join_request`` event.
 
-    :param self:
-        The current client.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
 
-    :param payload:
+    payload : :class:`GatewayDispatch`
         The data received from the activity join request event.
+        
+    return :class:`User`
     """
     return "on_activity_join_request", [
         User.from_dict(construct_client_dict(self, payload.data))
     ]
+
 
 def export():
     return activity_join_request_middleware

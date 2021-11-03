@@ -12,20 +12,26 @@ from ..core.dispatch import GatewayDispatch
 
 
 async def notification_create_middleware(self, payload: GatewayDispatch):
-    """
+    """|coro|
+
     Middleware for ``on_notification_create`` event.
 
-    :param self:
-        The current client.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
 
-    :param payload:
+    payload : :class:`GatewayDispatch`
         The data received from the notification create event.
+        
+    return :class:`NotificationCreateEvent`
     """
     channel_id: int = payload.data.get("channel_id")
     payload.data["message"]["channel_id"] = channel_id
     return "notification_create", [
         NotificationCreateEvent.from_dict(construct_client_dict(self, payload.data))
     ]
+
 
 def export():
     return notification_create_middleware

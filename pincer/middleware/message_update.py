@@ -9,16 +9,19 @@ from ..utils.conversion import construct_client_dict
 
 
 async def message_update_middleware(self, payload: GatewayDispatch):
-    """
-    Middleware for ``on_message_update`` event,
-        generate a class for the message that has been updated.
+    """|coro|
 
-    :param self:
-        The current client.
+    Middleware for ``on_message_update`` event.
 
-    :param payload:
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
+
+    payload : :class:`GatewayDispatch`
         The data received from the message update event.
-
+        
+    return :class:`UserMessage`
     """
     return "on_message_update", [
         UserMessage.from_dict(construct_client_dict(self, payload.data))

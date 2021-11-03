@@ -26,6 +26,7 @@ class VoiceServerUpdateEvent(APIObject):
     :param endpoint:
         the voice server host
     """
+
     token: str
     guild_id: Snowflake
     endpoint: Optional[str] = None
@@ -35,49 +36,51 @@ class VoiceServerUpdateEvent(APIObject):
 class VoiceChannelSelectEvent(APIObject):
     """
     Sent when the client joins a voice channel
-    
-    :param: channel_id
+
+    :param channel_id:
         id of channel
-        
-    :param: guild_id
+
+    :param guild_id:
         id of guild
     """
+
     channel_id: Snowflake = MISSING
     guild_id: Snowflake = MISSING
 
 
 class VoiceConnectionStates(Enum):
     """
-    :param: DISCONNECTED
+    :param DISCONNECTED:
         TCP disconnected
-        
-    :param: AWAITING_ENDPOINT
-    	Waiting for voice endpoint
-    
-    :param: AUTHENTICATING
+
+    :param AWAITING_ENDPOINT:
+        Waiting for voice endpoint
+
+    :param AUTHENTICATING:
         TCP authenticating
-        
-    :param: CONNECTING
+
+    :param CONNECTING:
         TCP connecting
-        
-    :param: CONNECTED
+
+    :param CONNECTED:
         TCP connected
-        
-    :param: VOICE_DISCONNECTED
+
+    :param VOICE_DISCONNECTED:
         TCP connected, Voice disconnected
-        
-    :param: VOICE_CONNECTING
-        TCP connected, Voice connecting     
 
-    :param: VOICE_CONNECTED
-        TCP connected, Voice connected        
+    :param VOICE_CONNECTING:
+        TCP connected, Voice connecting
 
-    :param: NO_ROUTE
+    :param VOICE_CONNECTED:
+        TCP connected, Voice connected
+
+    :param NO_ROUTE:
         No route to host
-        
-    :param: ICE_CHECKING
-        WebRTC ice checking    
+
+    :param ICE_CHECKING:
+        WebRTC ice checking
     """
+
     DISCONNECTED = "DISCONNECTED"
     AWAITING_ENDPOINT = "AWAITING_ENDPOINT"
     AUTHENTICATING = "AUTHENTICATING"
@@ -94,25 +97,25 @@ class VoiceConnectionStates(Enum):
 class VoiceConnectionStatusEvent(APIObject):
     """
     Sent when the client's voice connection status changes
-    
-    :param: state
+
+    :param state:
         one of the voice connection states listed below
-        
-    :param: hostname
+
+    :param hostname:
         hostname of the connected voice server
-        
-    :param: pings
+
+    :param pings:
         last 20 pings (in ms)
-        
-    :param: average_ping
+
+    :param average_ping:
         average ping (in ms)
-        
-    :param: last_ping
+
+    :param last_ping:
         last ping (in ms)
     """
+
     state: VoiceConnectionStates
     hostname: str
     pings: List[int]
     average_ping: int
     last_ping: int
-    

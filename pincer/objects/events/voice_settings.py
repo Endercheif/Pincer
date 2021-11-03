@@ -7,8 +7,6 @@ from dataclasses import dataclass
 from enum import Enum, IntEnum
 from typing import List
 
-from ...utils.conversion import construct_client_dict
-
 from ...utils.api_object import APIObject
 
 
@@ -17,10 +15,10 @@ class AvailableDevices(APIObject):
     """
     Represents an availabe device for voice settings
 
-    :param: id
+    :param id:
         id of the available device
 
-    :param: name
+    :param name:
         name of the available device
     """
 
@@ -33,13 +31,13 @@ class VoiceSettingsInput(APIObject):
     """
     Represents a voice setting input object
 
-    :param: device_id
+    :param device_id:
         the device's id
 
-    :param: volume
+    :param volume:
         input voice level (min: 0, max: 100)
 
-    :param: available_devices
+    :param available_devices:
         array of read-only device objects containing id and name string keys
     """
 
@@ -72,13 +70,13 @@ class ShortcutKeyCombo(APIObject):
     """
     Represents a shortcut key combo for the voice mode settings from a user
 
-    :param: type
+    :param type:
         type of shortcut key combo
 
-    :param: code
+    :param code:
         key code
 
-    :param: name
+    :param name:
         key name
     """
 
@@ -92,16 +90,16 @@ class VoiceSettingsMode(APIObject):
     """
     Represents the voice mode settings from a user
 
-    :param: type
+    :param type:
         voice setting mode type
 
-    :param: auto_threshold
+    :param auto_threshold:
         voice activity threshold automatically sets its threshold
 
-    :param: threshold
+    :param threshold:
         threshold for voice activity (in dB)
 
-    :param: shortcut
+    :param shortcut:
         shortcut key combos for PTT
     """
 
@@ -117,34 +115,34 @@ class VoiceSettingsUpdateEvent(APIObject):
     """
     Represents a user's voice settings
 
-    :param: input:
+    :param input:
         input settings
 
-    :param: output:
+    :param output:
         output settings
 
-    :param: mode
+    :param mode:
         voice mode settings
 
-    :param: automatic_gain_control:
+    :param automatic_gain_control:
         state of automatic gain control
 
-    :param: echo_cancellation:
+    :param echo_cancellation:
         state of echo cancellation
 
-    :param: noise_suppression:
+    :param noise_suppression:
         state of noise suppression
 
-    :param: qos:
+    :param qos:
         state of voice quality of service
 
-    :param: silence_warning:
+    :param silence_warning:
         state of silence warning notice
 
-    :param: deaf:
+    :param deaf:
             state of self-deafen
 
-    :param: mute:
+    :param mute:
             state of self-mute
     """
 

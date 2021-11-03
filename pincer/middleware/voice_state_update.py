@@ -12,15 +12,19 @@ from ..utils.conversion import construct_client_dict
 
 
 async def voice_state_update_middleware(self, payload: GatewayDispatch):
-    """
+    """|coro|
+
     Middleware for ``on_voice_state_update`` event.
 
-    :param self:
-        The current client.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
 
-    :param payload:
+    payload : :class:`GatewayDispatch`
         The data received from the voice state update event.
-
+        
+    return :class:`VoiceState`
     """
     return "on_voice_state_update", [
         VoiceState.from_dict(construct_client_dict(self, payload.data))

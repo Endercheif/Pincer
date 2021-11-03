@@ -8,15 +8,20 @@ from ..objects.events.message import MessageDeleteEvent
 from ..utils.conversion import construct_client_dict
 
 
-async def on_message_delete_middleware(self, payload: GatewayDispatch):
-    """
+async def message_delete_middleware(self, payload: GatewayDispatch):
+    """|coro|
+
     Middleware for ``on_message_delete`` event.
 
-    :param self:
-        The current client.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
 
-    :param payload:
-        The data received from the delete message event.
+    payload : :class:`GatewayDispatch`
+        The data received from the message delete event.
+        
+    return :class:`MessageDeleteEvent`
     """
     return "on_message_delete", [
         MessageDeleteEvent.from_dict(construct_client_dict(self, payload.data))
@@ -24,4 +29,4 @@ async def on_message_delete_middleware(self, payload: GatewayDispatch):
 
 
 def export():
-    return on_message_delete_middleware
+    return message_delete_middleware

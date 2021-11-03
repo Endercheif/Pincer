@@ -11,16 +11,21 @@ from ..utils.conversion import construct_client_dict
 
 
 def error_middleware(self, payload: GatewayDispatch):
-    """
+    """|coro|
+
     Middleware for ``on_error`` event.
 
-    :param self:
+    Parameters
+    ----------
+    self : :class:`Client`
         The current client/bot.
 
-    :param payload:
-        The data received from the ready event.
+    payload : :class:`GatewayDispatch`
+        The data received from the error event.
+        
+    return :class:`DiscordError`
     """
 
-    return "on_error",  [
+    return "on_error", [
         DiscordError.from_dict(construct_client_dict(self, payload.data))
     ]

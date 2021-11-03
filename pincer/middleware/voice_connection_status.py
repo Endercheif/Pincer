@@ -9,18 +9,24 @@ from ..core.dispatch import GatewayDispatch
 
 
 async def voice_connection_status_middleware(self, payload: GatewayDispatch):
-    """
+    """|coro|
+
     Middleware for ``on_voice_connection_status`` event.
 
-    :param self:
-        The current client.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
 
-    :param payload:
+    payload : :class:`GatewayDispatch`
         The data received from the voice connection status event.
+        
+    return :class:`VoiceConnectionStatusEvent`
     """
     return "on_voice_connection_status", [
         VoiceConnectionStatusEvent.from_dict(construct_client_dict(self, payload.data))
     ]
-    
+
+
 def export():
     return voice_connection_status_middleware

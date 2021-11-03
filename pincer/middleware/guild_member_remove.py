@@ -23,13 +23,13 @@ async def guild_member_remove_middleware(self, payload: GatewayDispatch):
 
     payload : :class:`GatewayDispatch`
         The data received from the guild member remove event.
+        
+    return :class:`GuildMemberRemoveEvent`
     """
 
     return (
         "on_guild_member_remove",
-        [GuildMemberRemoveEvent.from_dict(
-            construct_client_dict(self, payload.data)
-        )]
+        [GuildMemberRemoveEvent.from_dict(construct_client_dict(self, payload.data))],
     )
 
 

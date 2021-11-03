@@ -9,18 +9,24 @@ from ..core.dispatch import GatewayDispatch
 
 
 async def guild_status_middleware(self, payload: GatewayDispatch):
-    """
+    """|coro|
+
     Middleware for ``on_guild_status`` event.
 
-    :param self:
-        The current client.
+    Parameters
+    ----------
+    self : :class:`Client`
+        The current client/bot.
 
-    :param payload:
+    payload : :class:`GatewayDispatch`
         The data received from the guild status event.
+        
+    return :class:`GuildStatusEvent`
     """
     return "on_guild_status", [
         GuildStatusEvent.from_dict(construct_client_dict(self, payload.data))
     ]
-    
+
+
 def export():
     return guild_status_middleware

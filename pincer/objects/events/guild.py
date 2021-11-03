@@ -29,6 +29,7 @@ class GuildBanAddEvent(APIObject):
     :param user:
         the banned user
     """
+
     guild_id: Snowflake
     user: User
 
@@ -44,6 +45,7 @@ class GuildBanRemoveEvent(APIObject):
     :param user:
         the unbanned user
     """
+
     guild_id: Snowflake
     user: User
 
@@ -59,6 +61,7 @@ class GuildEmojisUpdateEvent(APIObject):
     :param emojis:
         array of emojis
     """
+
     guild_id: Snowflake
     emojis: List[Emoji]
 
@@ -74,6 +77,7 @@ class GuildStickersUpdateEvent(APIObject):
     :param stickers:
         array of stickers
     """
+
     guild_id: Snowflake
     stickers: List[Sticker]
 
@@ -86,6 +90,7 @@ class GuildIntegrationsUpdateEvent(APIObject):
     :param guild_id:
         id of the guild whose integrations were updated
     """
+
     guild_id: Snowflake
 
 
@@ -99,6 +104,7 @@ class GuildMemberAddEvent(GuildMember):
     guild_id: :class:`Snowflake`
         ID of the guild that the user joined.
     """
+
     # NOTE: This isn't a default value. I set it to this because you can't
     # have fields without default values after regular fields. Apparently that
     # carries over when you inherit from a dataclass.
@@ -116,6 +122,7 @@ class GuildMemberRemoveEvent(APIObject):
     :param user:
         the user who was removed
     """
+
     guild_id: Snowflake
     user: User
 
@@ -155,6 +162,7 @@ class GuildMemberUpdateEvent(APIObject):
         whether the user has not yet passed the guild's
         Membership Screening requirements
     """
+
     guild_id: Snowflake
     roles: List[Snowflake]
     user: User
@@ -197,6 +205,7 @@ class GuildMembersChunkEvent(APIObject):
     :param nonce:"
         the nonce used in the Guild Members Request
     """
+
     guild_id: Snowflake
     members: List[GuildMember]
     chunk_index: int
@@ -208,11 +217,7 @@ class GuildMembersChunkEvent(APIObject):
 
     def __post_init__(self):
         self.members = [
-            GuildMember.from_dict(
-                construct_client_dict(
-                    self._client, member
-                )
-            )
+            GuildMember.from_dict(construct_client_dict(self._client, member))
             for member in self.members
         ]
 
@@ -228,6 +233,7 @@ class GuildRoleCreateEvent(APIObject):
     :param role:
         the role created
     """
+
     guild_id: Snowflake
     role: Role
 
@@ -243,6 +249,7 @@ class GuildRoleUpdateEvent(APIObject):
     :param role:
         the role updated
     """
+
     guild_id: Snowflake
     role: Role
 
@@ -258,6 +265,7 @@ class GuildRoleDeleteEvent(APIObject):
     :param role_id:
         id of the role
     """
+
     guild_id: Snowflake
     role_id: Snowflake
 
@@ -266,12 +274,13 @@ class GuildRoleDeleteEvent(APIObject):
 class GuildStatusEvent(APIObject):
     """
     Sent when a subscribed server's state changes
-    
-    :param: guild
+
+    :param guild:
         guild with requested id
-        
-    :param: online
+
+    :param online:
         number of online users in guild (deprecated; always 0)
     """
+
     guild: Guild
     online = 0
