@@ -19,10 +19,14 @@ def channel_create_middleware(self, payload: GatewayDispatch):
 
     payload : :class:`GatewayDispatch`
         The data received from the channel create event.
-        
+
     return :class:`Channel`
     """
 
     return "on_channel_creation", [
         Channel.from_dict(construct_client_dict(self, payload.data))
     ]
+
+
+def export():
+    return channel_create_middleware

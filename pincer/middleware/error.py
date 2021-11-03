@@ -22,10 +22,14 @@ def error_middleware(self, payload: GatewayDispatch):
 
     payload : :class:`GatewayDispatch`
         The data received from the error event.
-        
+
     return :class:`DiscordError`
     """
 
     return "on_error", [
         DiscordError.from_dict(construct_client_dict(self, payload.data))
     ]
+
+
+def export():
+    return error_middleware
