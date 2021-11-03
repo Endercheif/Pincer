@@ -7,6 +7,7 @@ to join a game.
 """
 
 from ..core.dispatch import GatewayDispatch
+from ..utils.types import Coro
 
 
 async def activity_join_middleware(self, payload: GatewayDispatch):
@@ -28,5 +29,5 @@ async def activity_join_middleware(self, payload: GatewayDispatch):
     return "on_activity_join", [secret]
 
 
-def export():
+def export() -> Coro:
     return activity_join_middleware

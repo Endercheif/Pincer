@@ -2,6 +2,7 @@
 # Full MIT License can be found in `LICENSE` at the project root.
 
 from ..core.dispatch import GatewayDispatch
+from ..utils.types import Coro
 
 
 async def payload_middleware(self, payload: GatewayDispatch):
@@ -22,5 +23,5 @@ async def payload_middleware(self, payload: GatewayDispatch):
     return "on_payload", [payload]
 
 
-def export():
+def export() -> Coro:
     return payload_middleware

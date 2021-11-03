@@ -6,9 +6,10 @@ sent when the client receives a notification
 (mention or new message in eligible channels)
 """
 
-from ..utils.conversion import construct_client_dict
-from ..objects.events.notification import NotificationCreateEvent
 from ..core.dispatch import GatewayDispatch
+from ..objects.events.notification import NotificationCreateEvent
+from ..utils.conversion import construct_client_dict
+from ..utils.types import Coro
 
 
 async def notification_create_middleware(self, payload: GatewayDispatch):
@@ -33,5 +34,5 @@ async def notification_create_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return notification_create_middleware

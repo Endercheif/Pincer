@@ -9,6 +9,7 @@ sent when a user's voice state changes in a subscribed voice channel
 from ..core.dispatch import GatewayDispatch
 from ..objects.user import VoiceState
 from ..utils.conversion import construct_client_dict
+from ..utils.types import Coro
 
 
 async def voice_state_update_middleware(self, payload: GatewayDispatch):
@@ -31,5 +32,5 @@ async def voice_state_update_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return voice_state_update_middleware

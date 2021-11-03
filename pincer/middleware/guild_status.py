@@ -3,9 +3,10 @@
 
 """Event sent when a subscribed server's state changes"""
 
+from ..core.dispatch import GatewayDispatch
 from ..objects.events.guild import GuildStatusEvent
 from ..utils.conversion import construct_client_dict
-from ..core.dispatch import GatewayDispatch
+from ..utils.types import Coro
 
 
 async def guild_status_middleware(self, payload: GatewayDispatch):
@@ -28,5 +29,5 @@ async def guild_status_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return guild_status_middleware

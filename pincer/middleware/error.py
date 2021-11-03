@@ -8,6 +8,7 @@ including command responses
 from ..core.dispatch import GatewayDispatch
 from ..objects.events.error import DiscordError
 from ..utils.conversion import construct_client_dict
+from ..utils.types import Coro
 
 
 def error_middleware(self, payload: GatewayDispatch):
@@ -31,5 +32,5 @@ def error_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return error_middleware

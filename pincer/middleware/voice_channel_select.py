@@ -6,6 +6,7 @@
 from ..core.dispatch import GatewayDispatch
 from ..objects.events.voice import VoiceChannelSelectEvent
 from ..utils.conversion import construct_client_dict
+from ..utils.types import Coro
 
 
 async def voice_channel_select_middleware(self, payload: GatewayDispatch):
@@ -28,5 +29,5 @@ async def voice_channel_select_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return voice_channel_select_middleware

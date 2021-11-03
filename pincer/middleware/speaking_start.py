@@ -3,8 +3,9 @@
 
 """sent when a user in a subscribed voice channel speaks"""
 
-from ..utils.snowflake import Snowflake
 from ..core.dispatch import GatewayDispatch
+from ..utils.snowflake import Snowflake
+from ..utils.types import Coro
 
 
 async def speaking_start_middleware(self, payload: GatewayDispatch):
@@ -26,5 +27,5 @@ async def speaking_start_middleware(self, payload: GatewayDispatch):
     return "on_speaking_start", [user_id]
 
 
-def export():
+def export() -> Coro:
     return speaking_start_middleware

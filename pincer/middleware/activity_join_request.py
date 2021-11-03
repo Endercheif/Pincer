@@ -3,9 +3,10 @@
 
 """sent when the user receives a Rich Presence Ask to Join request"""
 
+from ..core.dispatch import GatewayDispatch
 from ..objects.user.user import User
 from ..utils.conversion import construct_client_dict
-from ..core.dispatch import GatewayDispatch
+from ..utils.types import Coro
 
 
 async def activity_join_request_middleware(self, payload: GatewayDispatch):
@@ -28,5 +29,5 @@ async def activity_join_request_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return activity_join_request_middleware

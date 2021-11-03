@@ -3,8 +3,9 @@
 
 """sent when a user in a subscribed voice channel stops speaking"""
 
-from ..utils.snowflake import Snowflake
 from ..core.dispatch import GatewayDispatch
+from ..utils.snowflake import Snowflake
+from ..utils.types import Coro
 
 
 async def speaking_stop_middleware(self, payload: GatewayDispatch):
@@ -26,5 +27,5 @@ async def speaking_stop_middleware(self, payload: GatewayDispatch):
     return "on_speaking_stop", [user_id]
 
 
-def export():
+def export() -> Coro:
     return speaking_stop_middleware

@@ -6,6 +6,7 @@
 from ..core.dispatch import GatewayDispatch
 from ..objects.events.message import MessageDeleteEvent
 from ..utils.conversion import construct_client_dict
+from ..utils.types import Coro
 
 
 async def message_delete_middleware(self, payload: GatewayDispatch):
@@ -28,5 +29,5 @@ async def message_delete_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return message_delete_middleware

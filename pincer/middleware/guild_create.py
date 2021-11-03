@@ -6,6 +6,7 @@
 from ..core.dispatch import GatewayDispatch
 from ..objects.guild import Guild
 from ..utils.conversion import construct_client_dict
+from ..utils.types import Coro
 
 
 async def guild_create_middleware(self, payload: GatewayDispatch):
@@ -28,5 +29,5 @@ async def guild_create_middleware(self, payload: GatewayDispatch):
     return "on_guild_create", [guild]
 
 
-def export():
+def export() -> Coro:
     return guild_create_middleware

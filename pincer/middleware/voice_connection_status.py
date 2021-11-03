@@ -3,9 +3,10 @@
 
 """sent when the client's voice connection status changes"""
 
+from ..core.dispatch import GatewayDispatch
 from ..objects.events.voice import VoiceConnectionStatusEvent
 from ..utils.conversion import construct_client_dict
-from ..core.dispatch import GatewayDispatch
+from ..utils.types import Coro
 
 
 async def voice_connection_status_middleware(self, payload: GatewayDispatch):
@@ -28,5 +29,5 @@ async def voice_connection_status_middleware(self, payload: GatewayDispatch):
     ]
 
 
-def export():
+def export() -> Coro:
     return voice_connection_status_middleware
