@@ -2,7 +2,7 @@
 # Full MIT License can be found in `LICENSE` at the project root.
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, auto
 from typing import List, Optional
 
 from ...utils.api_object import APIObject
@@ -81,16 +81,16 @@ class VoiceConnectionStates(Enum):
         WebRTC ice checking
     """
 
-    DISCONNECTED = "DISCONNECTED"
-    AWAITING_ENDPOINT = "AWAITING_ENDPOINT"
-    AUTHENTICATING = "AUTHENTICATING"
-    CONNECTING = "CONNECTING"
-    CONNECTED = "CONNECTED"
-    VOICE_DISCONNECTED = "VOICE_DISCONNECTED"
-    VOICE_CONNECTING = "VOICE_CONNECTING"
-    VOICE_CONNECTED = "VOICE_CONNECTED"
-    NO_ROUTE = "NO_ROUTE"
-    ICE_CHECKING = "ICE_CHECKING"
+    DISCONNECTED = auto()
+    AWAITING_ENDPOINT = auto()
+    AUTHENTICATING = auto()
+    CONNECTING = auto()
+    CONNECTED = auto()
+    VOICE_DISCONNECTED = auto()
+    VOICE_CONNECTING = auto()
+    VOICE_CONNECTED = auto()
+    NO_ROUTE = auto()
+    ICE_CHECKING = auto()
 
 
 @dataclass
