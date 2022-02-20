@@ -7,7 +7,7 @@ from asyncio import ensure_future
 from importlib import reload, import_module
 from inspect import isclass
 from types import ModuleType
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 from .commands.chat_command_handler import ChatCommandHandler
 from .commands.interactable import Interactable
@@ -20,12 +20,12 @@ if TYPE_CHECKING:
 
 class CogManager:
     """
-    A class that can load and unload cogs
+    A class that can load and unload cogs.
     """
 
     def load_cog(self, cog: Type[Cog]):
         """Load a cog from a string path, setup method in COG may
-        optionally have a first argument which will contain the client!
+        optionally have a first argument which will contain the client.
 
         :Example usage:
 
@@ -117,14 +117,14 @@ class CogManager:
         ensure_future(ChatCommandHandler(self).initialize())
 
     @property
-    def cogs(self) -> List[Cog]:
+    def cogs(self) -> list[Cog]:
         """Get a dictionary of all loaded cogs.
 
         The key/value pair is import path/cog class.
 
         Returns
         -------
-        List[:class:`~pincer.cog.Cog`]
+        list[:class:`~pincer.cog.Cog`]
             The list of cogs
         """
         return [

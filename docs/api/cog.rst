@@ -4,11 +4,12 @@
 Pincer Cog Module
 =================
 
-cog
+CogManager
+----------
+.. attributetable:: CogManager
+.. autoclass:: CogManager()
+
+Cog
 ---
 .. attributetable:: Cog
 .. autoclass:: Cog()
-
-.. autofunction:: load_cog
-.. autofunction:: load_module
-.. autofunction:: reload_cog
