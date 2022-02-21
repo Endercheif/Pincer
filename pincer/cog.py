@@ -54,7 +54,7 @@ class CogManager:
 
         Parameters
         ----------
-        cog : Type[:class:`~pincer.cog.Cog`]
+        cog :
             The cog to load.
         """
         if cog in ChatCommandHandler.managers:
@@ -72,7 +72,7 @@ class CogManager:
 
         Parameters
         ----------
-        \\*cogs : Type[:class:`~pincer.cog.Cog`]
+        \\*cogs : :class:`~typing.Type`\\[:class:`~pincer.cog.Cog`\\]
             A list of cogs to load.
         """
         for cog in cogs:
@@ -83,7 +83,7 @@ class CogManager:
 
         Parameters
         ----------
-        module : :class:`~types.ModuleType`
+        module : :class:`~typing.ModuleType`
             The module to load.
         """
         for item in vars(module).values():
@@ -124,7 +124,7 @@ class CogManager:
 
         Returns
         -------
-        list[:class:`~pincer.cog.Cog`]
+        :class:`list`\\[:class:`~pincer.cog.Cog`\\]
             The list of cogs
         """
         return [

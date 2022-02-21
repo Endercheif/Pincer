@@ -4,7 +4,7 @@ from typing import Optional
 
 
 class PincerError(Exception):
-    """Base exception class for all Pincer errors"""
+    """Base exception class for all Pincer errors."""
 
 
 class InvalidPayload(PincerError):
@@ -28,7 +28,7 @@ class UnhandledException(PincerError):
 
 
 class NoExportMethod(PincerError):
-    """Exception which gets raised when an `export` method is expected but
+    """Exception which gets raised when an ``export`` method is expected but
     not found in a module.
     """
 
@@ -45,13 +45,13 @@ class CogNotFound(CogError):
 
 class CogAlreadyExists(CogError):
     """Exception which gets raised when a cog is already loaded, but is
-    trying to be reloaded!
+    trying to be reloaded.
     """
 
 
 class NoValidSetupMethod(CogError):
     """Exception which gets raised when an `setup` function is expected but
-    none was found!
+    none was found.
     """
 
 
@@ -121,7 +121,7 @@ class InvalidCommandGuild(CommandError):
 class InteractionDoesNotExist(CommandError):
     """The action which you are trying to perform requires an
     interaction to be created/sent to discord. But this has not been
-    done yet!
+    done yet.
     """
 
 
@@ -133,7 +133,7 @@ class UseFollowup(CommandError):
 
 class InteractionAlreadyAcknowledged(CommandError):
     """The command has already been acknowledged by discord.
-    This can be because a reply or ack has already been sent!
+    This can be because a reply or ack has already been sent.
     """
 
 
@@ -176,11 +176,11 @@ class EmbedFieldError(PincerError, ValueError):
 
         Parameters
         ----------
-        _type :class:`str`
+        _type :
             The type/name of the field.
-        max_si :class:`int`
+        max_size :
             The maximum size of the field.
-        cur_size :class:`int`
+        cur_size :
             The current size of the field.
         """
         return cls(
@@ -198,7 +198,7 @@ class TaskError(PincerError):
 
     Attributes
     ----------
-    task: :class:`~utils.tasks.Task`
+    task: :class:`~pincer.utils.tasks.Task`
         The task that raised the exception.
     """
 
@@ -264,12 +264,12 @@ class UnavailableGuildError(PincerError):
 
 class TimeoutError(PincerError):
     """Exception raised when :class:`~pincer.utils.event_mgr.EventMgr`
-    `wait_for` and `loop_for` methods time out
+    ``wait_for`` and ``loop_for`` methods time out.
     """
 
 
 class GatewayConnectionError(PincerError):
-    """Could not connect to Discord gateway"""
+    """Could not connect to Discord gateway."""
 
 
 # Discord HTTP Errors

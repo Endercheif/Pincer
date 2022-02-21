@@ -16,12 +16,9 @@ from functools import partial
 from inspect import isasyncgenfunction
 from typing import (
     Any,
-    Dict,
-    List,
     Optional,
     Iterable,
     OrderedDict,
-    Tuple,
     Union,
     overload,
     TYPE_CHECKING,
@@ -71,10 +68,10 @@ if TYPE_CHECKING:
 
 _log = logging.getLogger(__package__)
 
-MiddlewareType = Optional[Union[Coro, Tuple[str, List[Any], Dict[str, Any]]]]
+MiddlewareType = Optional[Union[Coro, tuple[str, list[Any], dict[str, Any]]]]
 
 _event = Union[str, InteractableStructure[None]]
-_events: Dict[str, Optional[Union[List[_event], _event]]] = defaultdict(list)
+_events: dict[str, Optional[list[_event] | _event]] = defaultdict(list)
 
 
 def event_middleware(call: str, *, override: bool = False):
@@ -123,10 +120,10 @@ def event_middleware(call: str, *, override: bool = False):
     Parameters
     ----------
     call : :class:`str`
-        The call that the function should tie to
+        The call that the function should tie to.
     override : :class:`bool`
         If it should override default middleware,
-        usually shouldn't be used |default| :data:`False`
+        usually shouldn't be used. |default| :data:`False`
     """
 
     def decorator(func: Coro):
@@ -175,14 +172,14 @@ class Client(Interactable, CogManager):
 
     Parameters
     ----------
-    token : :class:`str`
+    token :
         The token to login with your bot from the developer portal
-    received : Optional[:class:`str`]
+    received :
         The default message which will be sent when no response is given.
         |default| :data:`None`
-    intents : Optional[Union[Iterable[:class:`~objects.app.intents.Intents`], :class:`~objects.app.intents.Intents`]]
+    intents : 
         The discord intents to use |default| :data:`Intents.all()`
-    throttler : Optional[:class:`~objects.app.throttling.ThrottleInterface`]
+    throttler :
         The cooldown handler for your client,
         defaults to :class:`~.objects.app.throttling.DefaultThrottleHandler`
         *(which uses the WindowSliding technique)*.
@@ -196,7 +193,7 @@ class Client(Interactable, CogManager):
         token: str,
         *,
         received: str = None,
-        intents: Intents = None,
+        intents: Iterable[Intents] | Intents = None,
         throttler: ThrottleInterface = DefaultThrottleHandler,
         reconnect: bool = True,
     ):
@@ -240,30 +237,25 @@ class Client(Interactable, CogManager):
 
         # The guild and channel value is only registered if the Client has the GUILDS
         # intent.
-        self.guilds: Dict[Snowflake, Optional[Guild]] = {}
-        self.channels: Dict[Snowflake, Optional[Channel]] = {}
+        self.guilds: dict[Snowflake, Guild] = {}
+        self.channels: dict[Snowflake, Channel] = {}
 
         ChatCommandHandler.managers.append(self)
 
         super().__init__()
 
     @property
-    def chat_commands(self) -> List[str]:
-        """List[:class:`str`]: List of chat commands
-
+    def chat_commands(self) -> list[str]:
+        """
         Get a list of chat command calls which have been registered in
         the :class:`~pincer.commands.ChatCommandHandler`\\.
         """
         return [cmd.metadata.name for cmd in ChatCommandHandler.register.values()]
 
     @property
-    def guild_ids(self) -> List[Snowflake]:
+    def guild_ids(self) -> list[Snowflake]:
         """
-        Returns a list of Guilds that the client is a part of
-
-        Returns
-        -------
-        List[:class:`pincer.utils.snowflake.Snowflake`]
+        Returns a list of Guilds that the client is a part of.
         """
         return self.guilds.keys()
 
@@ -312,9 +304,9 @@ class Client(Interactable, CogManager):
         Raises
         ------
         TypeError
-            If the function is not a coro
-        InvalidEventName
-            If the function name is not a valid event (on_x)
+            If the function is not a coroutine.
+        :class:`~pincer.exceptions.InvalidEventName`
+            If the function name is not a valid event (on_x).
         """
         if not iscoroutinefunction(coroutine) and not isasyncgenfunction(
             coroutine
@@ -342,17 +334,13 @@ class Client(Interactable, CogManager):
         return event
 
     @staticmethod
-    def get_event_coro(name: str) -> List[Optional[InteractableStructure[None]]]:
-        """get the coroutine for an event
+    def get_event_coro(name: str) -> list[Optional[InteractableStructure[None]]]:
+        """Get the coroutine for an event.
 
         Parameters
         ----------
         name : :class:`str`
-            name of the event
-
-        Returns
-        -------
-        List[Optional[:class:`~pincer.objects.app.command.InteractableStructure`[None]]]
+            Name of the event.
         """
         calls = _events.get(name.strip().lower())
 
@@ -368,22 +356,22 @@ class Client(Interactable, CogManager):
 
     @staticmethod
     def execute_event(
-        events: List[InteractableStructure],
+        events: list[InteractableStructure],
         gateway: Gateway,
         *args,
         **kwargs
     ):
-        """Invokes an event.
+        """Invokes a list of events.
 
         Parameters
         ----------
-        calls: List[:class:`~pincer.objects.app.command.InteractableStructure`]
-            The call (method) to which the event is registered.
-
-        \\*args:
+        events :
+            List of events to invoke.
+        gateway :
+            The gateway in use.
+        \\*args :
             The arguments for the event.
-
-        \\*\\*kwargs:
+        \\*\\*kwargs :
             The named arguments for the event.
         """
 
@@ -416,9 +404,11 @@ class Client(Interactable, CogManager):
         """
         Runs shards that you specify.
 
-        shards: Iterable
+        Parameters
+        ----------
+        shards :
             The shards to run.
-        num_shards: int
+        num_shards :
             The total amount of shards.
         """
         for shard in shards:
@@ -428,13 +418,16 @@ class Client(Interactable, CogManager):
 
     async def start_shard(self, shard: int, num_shards: int):
         """|coro|
+
         Starts a shard
         This should not be run most of the time. ``run_shards`` and ``run_autosharded``
         will likely do what you want.
 
-        shard : int
+        Parameters
+        ----------
+        shard :
             The number of the shard to start.
-        num_shards : int
+        num_shards :
             The total number of shards.
         """
 
@@ -473,10 +466,10 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        guild_id : Optional[:class:`~pincer.utils.snowflake.Snowflake`]
+        guild_id :
             The guild_id of the shard to look for. If no guild id is provided, the
-            shard that receives dms will be returned. |default| :data:`None`
-        num_shards : Optional[:class:`int`]
+            shard that receives DMs will be returned. |default| :data:`None`
+        num_shards :
             The number of shards. If no number is provided, the value will default to
             the num_shards for the first started shard. |default| :data:`None`
         """
@@ -492,12 +485,7 @@ class Client(Interactable, CogManager):
 
     @property
     def is_closed(self) -> bool:
-        """
-        Returns
-        -------
-        bool
-            Whether the bot is closed.
-        """
+        """Whether the bot is closed."""
         return self.loop.is_running()
 
     def close(self):
@@ -524,7 +512,7 @@ class Client(Interactable, CogManager):
         gateway: Gateway,
         *args,
         **kwargs,
-    ) -> Tuple[Optional[Coro], List[Any], Dict[str, Any]]:
+    ) -> tuple[Optional[Coro], list[Any], dict[str, Any]]:
         """|coro|
 
         Handles all middleware recursively. Stops when it has found an
@@ -538,17 +526,19 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        payload : :class:`~pincer.core.dispatch.GatewayDispatch`
-            The original payload for the event
-        key : :class:`str`
-            The index of the middleware in ``_events``
+        payload :
+            The original payload for the event.
+        key :
+            The index of the middleware in ``_events``.
+        gateway :
+            The gateway that will be used.
 
         Raises
         ------
         RuntimeError
-            The return type must be a tuple
+            The return type must be a tuple.
         RuntimeError
-            Middleware has not been registered
+            Middleware has not been registered.
         """
         ware: MiddlewareType = _events.get(key)
         next_call, arguments, params = ware, [], {}
@@ -588,9 +578,11 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        error : :class:`Exception`
+        error :
             The error that should be passed to the event
-        name : :class:`str`
+        gateway :
+            The gateway the event will be sent to.
+        name :
             the name of the event |default| ``on_error``
 
         Raises
@@ -612,13 +604,15 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        name : :class:`str`
+        name :
             The name of the event, this is also the filename in the
             middleware directory.
-        payload : :class:`~pincer.core.dispatch.GatewayDispatch`
+        payload :
             The payload sent from the Discord gateway, this contains the
             required data for the client to know what event it is and
             what specifically happened.
+        gateway :
+            The gateway the event will be sent to.
         """
         try:
             key, args = await self.handle_middleware(payload, name, gateway)
@@ -637,7 +631,9 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        payload : :class:`~pincer.core.dispatch.GatewayDispatch`
+        gateway :
+            The gateway the event will be sent to.
+        payload :
             The payload sent from the Discord gateway, this contains the
             required data for the client to know what event it is and
             what specifically happened.
@@ -653,7 +649,9 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        payload : :class:`~pincer.core.dispatch.GatewayDispatch`
+        gateway :
+            The gateway the event will be sent to.
+        payload :
             The payload sent from the Discord gateway, this contains the
             required data for the client to know what event it is and
             what specifically happened.
@@ -670,14 +668,16 @@ class Client(Interactable, CogManager):
         verification_level: Optional[int] = None,
         default_message_notifications: Optional[int] = None,
         explicit_content_filter: Optional[int] = None,
-        roles: Optional[List[Role]] = None,
-        channels: Optional[List[Channel]] = None,
+        roles: Optional[list[Role]] = None,
+        channels: Optional[list[Channel]] = None,
         afk_channel_id: Optional[Snowflake] = None,
         afk_timeout: Optional[int] = None,
         system_channel_id: Optional[Snowflake] = None,
         system_channel_flags: Optional[int] = None,
     ) -> Guild:
-        """Creates a guild.
+        """|coro|
+
+        Creates a guild.
 
         Parameters
         ----------
@@ -693,9 +693,9 @@ class Client(Interactable, CogManager):
             Default message notification level |default| :data:`None`
         explicit_content_filter : Optional[:class:`int`]
             Explicit content filter level |default| :data:`None`
-        roles : Optional[List[:class:`~pincer.objects.guild.role.Role`]]
+        roles : Optional[list[:class:`~pincer.objects.guild.role.Role`]]
             New guild roles |default| :data:`None`
-        channels : Optional[List[:class:`~pincer.objects.guild.channel.Channel`]]
+        channels : Optional[list[:class:`~pincer.objects.guild.channel.Channel`]]
             New guild's channels |default| :data:`None`
         afk_channel_id : Optional[:class:`~pincer.utils.snowflake.Snowflake`]
             ID for AFK channel |default| :data:`None`
@@ -710,7 +710,7 @@ class Client(Interactable, CogManager):
         Returns
         -------
         :class:`~pincer.objects.guild.guild.Guild`
-            The created guild
+            The created guild.
         """
         ...
 
@@ -720,17 +720,18 @@ class Client(Interactable, CogManager):
 
     async def get_guild_template(self, code: str) -> GuildTemplate:
         """|coro|
+
         Retrieves a guild template by its code.
 
         Parameters
         ----------
         code : :class:`str`
-            The code of the guild template
+            The code of the guild template.
 
         Returns
         -------
         :class:`~pincer.objects.guild.template.GuildTemplate`
-            The guild template
+            The guild template.
         """
         return GuildTemplate.from_dict(
             await self.http.get(f"guilds/templates/{code}")
@@ -740,21 +741,22 @@ class Client(Interactable, CogManager):
         self, template: GuildTemplate, name: str, icon: Optional[str] = None
     ) -> Guild:
         """|coro|
+
         Creates a guild from a template.
 
         Parameters
         ----------
-        template : :class:`~pincer.objects.guild.template.GuildTemplate`
-            The guild template
-        name : :class:`str`
-            Name of the guild (2-100 characters)
-        icon : Optional[:class:`str`]
-            base64 128x128 image for the guild icon |default| :data:`None`
+        template :
+            The guild template.
+        name :
+            Name of the guild (2-100 characters).
+        icon :
+            base64 128x128 image for the guild icon. |default| :data:`None`
 
         Returns
         -------
         :class:`~pincer.objects.guild.guild.Guild`
-            The created guild
+            The created guild.
         """
         return Guild.from_dict(
             await self.http.post(
@@ -772,12 +774,12 @@ class Client(Interactable, CogManager):
         """
         Parameters
         ----------
-        event_name : str
+        event_name :
             The type of event. It should start with `on_`. This is the same
             name that is used for @Client.event.
-        check : CheckFunction
+        check :
             This function only returns a value if this return true.
-        timeout: Optional[float]
+        timeout :
             Amount of seconds before timeout.
 
         Returns
@@ -797,14 +799,14 @@ class Client(Interactable, CogManager):
         """
         Parameters
         ----------
-        event_name : str
+        event_name :
             The type of event. It should start with `on_`. This is the same
             name that is used for @Client.event.
-        check : Callable[[Any], bool], default=None
+        check :
             This function only returns a value if this return true.
-        iteration_timeout: Union[float, None]
+        iteration_timeout :
             Amount of seconds before timeout. Timeouts are for each loop.
-        loop_timeout: Union[float, None]
+        loop_timeout :
             Amount of seconds before the entire loop times out. The generator
             will only raise a timeout error while it is waiting for an event.
 
@@ -824,11 +826,10 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        with_count: :class:bool
+        with_count :
             Whether to include the member count in the guild object.
-            Default to `False`
-
-        guild_id : :class:`int`
+            |default| :data:`False`
+        guild_id :
             The id of the guild which should be fetched from the Discord
             gateway.
 
@@ -842,7 +843,7 @@ class Client(Interactable, CogManager):
     async def get_user(self, _id: int) -> User:
         """|coro|
 
-        Fetch a User from its identifier
+        Fetch a User from its identifier.
 
         Parameters
         ----------
@@ -862,10 +863,11 @@ class Client(Interactable, CogManager):
 
         Fetch a role object by the role identifier.
 
-        guild_id: :class:`int`
+        Parameters
+        ----------
+        guild_id :
             The guild in which the role resides.
-
-        role_id: :class:`int`
+        role_id :
             The id of the guild which should be fetched from the Discord
             gateway.
 
@@ -878,6 +880,7 @@ class Client(Interactable, CogManager):
 
     async def get_channel(self, _id: int) -> Channel:
         """|coro|
+
         Fetch a Channel from its identifier. The ``get_dm_channel`` method from
         :class:`~pincer.objects.user.user.User` should be used if you need to
         create a dm_channel; using the ``send()`` method from
@@ -885,7 +888,7 @@ class Client(Interactable, CogManager):
 
         Parameters
         ----------
-        _id: :class:`int`
+        _id :
             The id of the user which should be fetched from the Discord
             gateway.
 
@@ -900,13 +903,14 @@ class Client(Interactable, CogManager):
         self, _id: Snowflake, channel_id: Snowflake
     ) -> UserMessage:
         """|coro|
-        Creates a UserMessage object
+
+        Creates a UserMessage object.
 
         Parameters
         ----------
-        _id: :class:`~pincer.utils.snowflake.Snowflake`
+        _id :
             ID of the message that is wanted.
-        channel_id : int
+        channel_id :
             ID of the channel the message is in.
 
         Returns
@@ -921,14 +925,15 @@ class Client(Interactable, CogManager):
         self, id: Snowflake, token: Optional[str] = None
     ) -> Webhook:
         """|coro|
+
         Fetch a Webhook from its identifier.
 
         Parameters
         ----------
-        id: :class:`int`
+        id :
             The id of the webhook which should be
             fetched from the Discord gateway.
-        token: Optional[:class:`str`]
+        token :
             The webhook token.
 
         Returns
@@ -940,6 +945,7 @@ class Client(Interactable, CogManager):
 
     async def get_current_user(self) -> User:
         """|coro|
+
         The user object of the requester's account.
 
         For OAuth2, this requires the ``identify`` scope,
@@ -950,6 +956,7 @@ class Client(Interactable, CogManager):
         Returns
         -------
         :class:`~pincer.objects.user.user.User`
+            The user object.
         """
         return User.from_dict(await self.http.get("users/@me"))
 
@@ -957,23 +964,23 @@ class Client(Interactable, CogManager):
         self, username: Optional[str] = None, avatar: Optional[File] = None
     ) -> User:
         """|coro|
-        Modify the requester's user account settings
+        Modify the requester's user account settings.
 
         Parameters
         ----------
-        username : Optional[:class:`str`]
-            user's username,
+        username :
+            User's username,
             if changed may cause the user's discriminator to be randomized.
             |default| :data:`None`
-        avatar : Optional[:class:`File`]
-            if passed, modifies the user's avatar
-            a data URI scheme of JPG, GIF or PNG
+        avatar :
+            If passed, modifies the user's avatar
+            a data URI scheme of JPG, GIF or PNG.
             |default| :data:`None`
 
         Returns
         -------
         :class:`~pincer.objects.user.user.User`
-            Current modified user
+            Current modified user.
         """
 
         avatar = avatar.uri if avatar else avatar
@@ -990,22 +997,23 @@ class Client(Interactable, CogManager):
         limit: Optional[int] = None,
     ) -> AsyncIterator[Guild]:
         """|coro|
+
         Returns a list of partial guild objects the current user is a member of.
         Requires the ``guilds`` OAuth2 scope.
 
         Parameters
         ----------
-        before : Optional[:class:`~pincer.utils.snowflake.Snowflake`]
-            get guilds before this guild ID
-        after : Optional[:class:`~pincer.utils.snowflake.Snowflake`]
-            get guilds after this guild ID
-        limit : Optional[:class:`int`]
-                max number of guilds to return (1-200) |default| :data:`200`
+        before :
+            Get guilds before this guild ID.
+        after :
+            Get guilds after this guild ID.
+        limit :
+            Max number of guilds to return (1-200). |default| :data:`200`
 
         Yields
         ------
         :class:`~pincer.objects.guild.guild.Guild`
-            A Partial Guild that the user is in
+            A Partial Guild that the user is in.
         """
         guilds = await self.http.get(
             "users/@me/guilds?"
@@ -1019,36 +1027,37 @@ class Client(Interactable, CogManager):
 
     async def leave_guild(self, _id: Snowflake):
         """|coro|
+
         Leave a guild.
 
         Parameters
         ----------
-        _id : :class:`~pincer.utils.snowflake.Snowflake`
-            the id of the guild that the bot will leave
+        _id :
+            The id of the guild that the bot will leave.
         """
         await self.http.delete(f"users/@me/guilds/{_id}")
         self._client.guilds.pop(_id, None)
 
     async def create_group_dm(
-        self, access_tokens: List[str], nicks: Dict[Snowflake, str]
+        self, access_tokens: list[str], nicks: dict[Snowflake, str]
     ) -> GroupDMChannel:
         """|coro|
+
         Create a new group DM channel with multiple users.
-        DMs created with this endpoint will not be shown in the Discord client
+        DMs created with this endpoint will not be shown in the Discord client.
 
         Parameters
         ----------
-        access_tokens : List[:class:`str`]
-            access tokens of users that have
-            granted your app the ``gdm.join`` scope
-
-        nicks : Dict[:class:`~pincer.utils.snowflake.Snowflake`, :class:`str`]
-            a dictionary of user ids to their respective nicknames
+        access_tokens :
+            Access tokens of users that have
+            granted your app the ``gdm.join`` scope.
+        nicks :
+            A dictionary of user ids to their respective nicknames.
 
         Returns
         -------
-        :class:`~pincer.objects.guild.channel.GroupDMChannel`
-            group DM channel created
+        :class:`~pincer.objects.channel.group_dm.GroupDMChannel`
+            Group DM channel created.
         """
         channel = await self.http.post(
             "users/@me/channels",
@@ -1059,13 +1068,14 @@ class Client(Interactable, CogManager):
 
     async def get_connections(self) -> AsyncIterator[Connection]:
         """|coro|
+
         Returns a list of connection objects.
         Requires the ``connections`` OAuth2 scope.
 
         Yields
         -------
-        :class:`~pincer.objects.user.connection.Connections`
-            the connection objects
+        :class:`~pincer.objects.user.connection.Connection`
+            The connection objects.
         """
         connections = await self.http.get("users/@me/connections")
         for conn in connections:
@@ -1078,7 +1088,7 @@ class Client(Interactable, CogManager):
         Yields
         ------
         :class:`~pincer.objects.message.sticker.StickerPack`
-            a sticker pack
+            A sticker pack.
         """
         packs = await self.http.get("sticker-packs")
         for pack in packs:
