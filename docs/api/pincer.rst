@@ -70,7 +70,6 @@ Exceptions
 .. autoexception:: InvalidUrlError()
 
 .. autoexception:: EmbedFieldError()
-    :exclude-members: from_desc
 
 .. autoexception:: TaskError()
 
