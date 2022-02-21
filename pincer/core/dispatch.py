@@ -8,7 +8,7 @@ from json import dumps, loads
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from typing import Any, Dict, Optional, Union
+    from typing import Any, Optional
 
 
 class GatewayDispatch:
@@ -18,7 +18,7 @@ class GatewayDispatch:
     ----------
     op: :class:`int`
         The discord opcode which represents what the message means.
-    data: Optional[Union[:class:`int`, Dict[:class:`str`, Any]]]
+    data: Optional[:class:`int` | :class:`bool` | dict[:class:`str`, Any]]
         The event data that has been sent/received.
     seq: Optional[:class:`int`]
         The sequence number of a message, which can be used
@@ -30,12 +30,12 @@ class GatewayDispatch:
     def __init__(
             self,
             op: int,
-            data: Optional[Union[int, bool, Dict[str, Any]]] = None,
+            data: Optional[int | bool | dict[str, Any]] = None,
             seq: Optional[int] = None,
             name: Optional[str] = None
     ):
         self.op: int = op
-        self.data: Optional[Union[int, bool, Dict[str, Any]]] = data
+        self.data: Optional[int | bool | dict[str, Any]] = data
         self.seq: Optional[int] = seq
         self.event_name: Optional[str] = name
 
@@ -64,7 +64,7 @@ class GatewayDispatch:
         :class:`~pincer.core.dispatch.GatewayDispatch`
             The new class.
         """
-        payload: Dict[str, Union[int, str, Dict[str, Any]]] = loads(payload)
+        payload: dict[str, int | str | dict[str, Any]] = loads(payload)
         return cls(
             payload.get("op"),
             payload.get("d"),

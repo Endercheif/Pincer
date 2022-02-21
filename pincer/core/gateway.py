@@ -11,7 +11,7 @@ from itertools import repeat, count, chain
 import logging
 from platform import system
 from random import random
-from typing import TYPE_CHECKING, Any, Dict, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional
 from zlib import decompressobj
 
 from aiohttp import (
@@ -38,7 +38,7 @@ inflator = decompressobj()
 
 @dataclass
 class SessionStartLimit(APIObject):
-    """Session start limit info returned from the `gateway/bot` endpoint"""
+    """Session start limit info returned from the ``gateway/bot`` endpoint."""
     total: int
     remaining: int
     reset_after: int
@@ -47,7 +47,7 @@ class SessionStartLimit(APIObject):
 
 @dataclass
 class GatewayInfo(APIObject):
-    """Gateway info returned from the `gateway/bot` endpoint"""
+    """Gateway info returned from the ``gateway/bot`` endpoint."""
     url: str
     shards: int
     session_start_limit: SessionStartLimit
@@ -64,13 +64,13 @@ class Gateway:
     (Which can be found on
     `<https://discord.com/developers/applications/>`_)
 
-    Parameters
+    Attributes
     ----------
-    token : str.
-        The token for this bot
+    token : str
+        The token for this bot.
     intents : :class:`~pincer.objects.app.intents.Intents`
         The intents to use. More information can be found at
-        `<https://discord.com/developers/docs/topics/gateway#gateway-intents>`_.
+        `<https://discord.dev/topics/gateway#gateway-intents>`_.
     url : str
         The gateway url.
     shard : int
@@ -78,7 +78,7 @@ class Gateway:
     num_shards : int
         Number used to route traffic to the current. This should usually be the total
         number of shards that will be run. More information at
-        `<https://discord.com/developers/docs/topics/gateway#sharding>`_.
+        `<https://discord.dev/topics/gateway#sharding>`_.
     """
 
     def __init__(
@@ -101,7 +101,7 @@ class Gateway:
         self.num_shards = num_shards
         self.shard_key = [shard, num_shards]
 
-        self.__dispatch_handlers: Dict[int, Handler] = {
+        self.__dispatch_handlers: dict[int, Handler] = {
             1: self.handle_heartbeat_req,
             7: self.handle_reconnect,
             9: self.handle_invalid_session,
@@ -112,7 +112,7 @@ class Gateway:
         # 4000 and 4009 are not included. The client will reconnect when receiving
         # either. Code 4000 is also used for internal disconnects that will lead to a
         # reconnect.
-        self.__close_codes: Dict[int, GatewayError] = {
+        self.__close_codes: dict[int, GatewayError] = {
             4001: GatewayError("Invalid opcode was sent"),
             4002: GatewayError("Invalid payload was sent."),
             4003: GatewayError("Payload was sent prior to identifying"),
@@ -174,22 +174,41 @@ class Gateway:
 
     async def init_session(self):
         """|coro|
+
         Crates the ClientSession. ALWAYS run this function right after initializing
         a Gateway.
         """
         self.__session = ClientSession()
 
-    def append_handlers(self, handlers: Dict[int, Handler]):
+    def append_handlers(self, handlers: dict[int, Handler]):
         """The Client that uses the handler can append their own methods. The gateway
         will run those methods when the specified opcode is received.
+
+        Parameters
+        ----------
+        handlers:
+            A dictionary of handlers.
         """
         self.__dispatch_handlers = {**self.__dispatch_handlers, **handlers}
 
     def set_session_id(self, _id: str):
-        """Session id is private for consistency"""
+        """Session id is private for consistency.
+
+        Parameters
+        ----------
+        _id:
+            The session id.
+        """
         self.__session_id = _id
 
     def decompress_msg(self, msg: bytes) -> Optional[str]:
+        """Decompresses a message.
+
+        Parameters
+        ----------
+        msg:
+            The message to decompress.
+        """
         if GatewayConfig.compression == "zlib-payload":
             return inflator.decompress(msg)
 
@@ -207,6 +226,7 @@ class Gateway:
 
     async def start_loop(self):
         """|coro|
+
         Instantiate the dispatcher, this will create a connection to the
         Discord websocket API on behalf of the client whose token has
         been passed.
@@ -233,7 +253,8 @@ class Gateway:
 
     async def event_loop(self):
         """|coro|
-        Handles receiving messages and decompressing them if needed
+
+        Handles receiving messages and decompressing them if needed.
         """
         async for msg in self.__socket:
             if msg.type == WSMsgType.TEXT:
@@ -262,11 +283,17 @@ class Gateway:
         # ensure_future prevents a stack overflow
         ensure_future(self.start_loop())
 
-    async def handle_data(self, data: Dict[Any]):
+    async def handle_data(self, data: dict[Any]):
         """|coro|
+
         Method is run when a payload is received from the gateway.
         The message is expected to already have been decompressed.
         Handling the opcode is forked to the background, so they aren't blocking.
+
+        Parameters
+        ----------
+        data:
+            The payload to handle.
         """
         payload = GatewayDispatch.from_string(data)
 
@@ -297,12 +324,14 @@ class Gateway:
 
     async def handle_heartbeat_req(self, payload: GatewayDispatch):
         """|coro|
+
         Opcode 1 - Instantly send a heartbeat.
         """
         self.send_next_heartbeat()
 
     async def handle_reconnect(self, payload: GatewayDispatch):
         """|coro|
+
         Opcode 7 - Reconnect and resume immediately.
         """
         _log.debug(
@@ -316,7 +345,9 @@ class Gateway:
 
     async def handle_invalid_session(self, payload: GatewayDispatch):
         """|coro|
+
         Opcode 9 - Invalid connection
+
         Attempt to relog. This is probably because the session was already invalidated
         when we tried to reconnect.
         """
@@ -333,11 +364,13 @@ class Gateway:
 
     async def identify_and_handle_hello(self, payload: GatewayDispatch):
         """|coro|
+
         Opcode 10 - Hello there general kenobi
+
         Runs when we connect to the gateway for the first time and every time after.
         If the client thinks it should reconnect, the opcode 6 resume payload is sent
         instead of the opcode 2 hello payload. A new session is only started after a
-        reconnect if pcode 9 is received.
+        reconnect if opcode 9 is received.
 
         Successful reconnects are handled in the `resumed` middleware.
         """
@@ -374,7 +407,9 @@ class Gateway:
 
     async def handle_heartbeat(self, payload: GatewayDispatch):
         """|coro|
+
         Opcode 11 - Heartbeat
+
         Track that the heartbeat has been received using shared state (Rustaceans would
         be very mad)
         """
@@ -382,6 +417,7 @@ class Gateway:
 
     async def send(self, payload: str):
         """|coro|
+
         Send a string object to the payload. Most of this method is just logging,
         the last line is the only one that matters for functionality.
         """
@@ -426,6 +462,7 @@ class Gateway:
 
     async def __heartbeat_loop(self):
         """|coro|
+
         The heartbeat is responsible for keeping the connection to Discord alive.
 
         Jitter is only random for the first heartbeat. It should be 1 every other

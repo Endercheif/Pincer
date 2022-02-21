@@ -9,8 +9,9 @@ import logging
 from time import time
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
-    from typing import Dict, Tuple
+    import aiohttp.typedefs
     from .http import HttpCallable
 
 _log = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ _log = logging.getLogger(__name__)
 
 @dataclass
 class Bucket:
-    """Represents a rate limit bucket
+    """Represents a rate limit bucket.
 
     Attributes
     ----------
@@ -41,30 +42,31 @@ class Bucket:
 
 
 class RateLimiter:
-    """Prevents ``user`` rate limits
+    """Prevents ``user`` rate limits.
+
     Attributes
     ----------
-    bucket_map : Dict[Tuple[str, :class:`~pincer.core.http.HttpCallable`], str]
+    bucket_map : dict[tuple[str, :class:`~pincer.core.http.HttpCallable`], str]
         Maps endpoints and methods to a rate limit bucket
-    buckets : Dict[str, :class:`~pincer.core.ratelimiter.Bucket`]
-        Dictionary of buckets
+    buckets : dict[str, :class:`~pincer.core.ratelimiter.Bucket`]
+        dictionary of buckets
     """
 
     def __init__(self) -> None:
-        self.bucket_map: Dict[Tuple[str, HttpCallable], str] = {}
-        self.buckets: Dict[str, Bucket] = {}
+        self.bucket_map: dict[tuple[str, HttpCallable], str] = {}
+        self.buckets: dict[str, Bucket] = {}
 
     def save_response_bucket(
         self,
         endpoint: str,
         method: HttpCallable,
-        header: Dict
+        header: dict
     ):
         """
         Parameters
         ----------
         endpoint : str
-            The endpoint
+            The endpoint.
         method : :class:`~pincer.core.http.HttpCallable`
             The method used on the endpoint (E.g. ``Get``, ``Post``, ``Patch``)
         header : :class:`aiohttp.typedefs.CIMultiDictProxy`
@@ -103,9 +105,9 @@ class RateLimiter:
         Parameters
         ----------
         endpoint : str
-            The endpoint
+            The endpoint.
         method : :class:`~pincer.core.http.HttpCallable`
-            The method used on the endpoint (E.g. ``Get``, ``Post``, ``Patch``)
+            The method used on the endpoint (E.g. ``Get``, ``Post``, ``Patch``).
         """
         bucket_id = self.bucket_map.get((endpoint, method))
 

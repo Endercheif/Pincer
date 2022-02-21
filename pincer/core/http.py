@@ -22,7 +22,7 @@ from ..exceptions import (
 from ..utils.conversion import remove_none
 
 if TYPE_CHECKING:
-    from typing import Any, Dict, Optional, Union
+    from typing import Any, Optional
 
     from aiohttp.client import _RequestContextManager
     from aiohttp.payload import Payload
@@ -39,14 +39,14 @@ class HttpCallable(Protocol):
     def __call__(
             self, url: StrOrURL, *,
             allow_redirects: bool = True,
-            method: Optional[Union[Dict, str, Payload]] = None,
+            method: Optional[dict | str | Payload] = None,
             **kwargs: Any
     ) -> _RequestContextManager:
         ...
 
 
 class HTTPClient:
-    """Interacts with Discord API through HTTP protocol
+    """Interacts with Discord API through HTTP protocol.
 
     Parameters
     ----------
@@ -55,21 +55,22 @@ class HTTPClient:
     token:
         Discord API token
 
-    Keyword Arguments:
+    Keyword Arguments
+    -----------------
 
     version:
         The discord API version.
         See `<https://discord.com/developers/docs/reference#api-versioning>`_.
     ttl:
-        Max amount of attempts after error code 5xx
+        Max amount of attempts after error code 5xx.
 
     Attributes
     ----------
     url: :class:`str`
         ``f"https://discord.com/api/v{version}"``
-        "Base url for all HTTP requests"
+        Base url for all HTTP requests.
     max_tts: :class:`int`
-        Max amount of attempts after error code 5xx
+        Max amount of attempts after error code 5xx.
     """
 
     def __init__(self, token: str, *, version: int = None, ttl: int = 5):
@@ -77,14 +78,14 @@ class HTTPClient:
         self.url: str = f"https://discord.com/api/v{version}"
         self.max_ttl: int = ttl
 
-        headers: Dict[str, str] = {
+        headers: dict[str, str] = {
             "Authorization": f"Bot {token}",
             "User-Agent": f"DiscordBot (https://github.com/Pincer-org/Pincer, {pincer.__version__})"  # noqa: E501
         }
         self.__rate_limiter = RateLimiter()
         self.__session: ClientSession = ClientSession(headers=headers)
 
-        self.__http_exceptions: Dict[int, HTTPError] = {
+        self.__http_exceptions: dict[int, HTTPError] = {
             304: NotModifiedError(),
             400: BadRequestError(),
             401: UnauthorizedError(),
@@ -104,7 +105,7 @@ class HTTPClient:
     async def close(self):
         """|coro|
 
-        Closes the aiohttp session
+        Closes the aiohttp session.
         """
         await self.__session.close()
 
@@ -113,11 +114,11 @@ class HTTPClient:
             method: HttpCallable,
             endpoint: str, *,
             content_type: str = "application/json",
-            data: Optional[Union[Dict, str, Payload]] = None,
-            headers: Optional[Dict[str, Any]] = None,
+            data: Optional[dict | str | Payload] = None,
+            headers: Optional[dict[str, Any]] = None,
             _ttl: Optional[int] = None,
-            params: Optional[Dict] = None,
-    ) -> Optional[Dict]:
+            params: Optional[dict] = None,
+    ) -> Optional[dict]:
         """
         Send an api request to the Discord REST API.
 
@@ -133,15 +134,15 @@ class HTTPClient:
         content_type: :class:`str`
             The request's content type.
 
-        data: Optional[Union[:class:`Dict`, :class:`str`, :class:`aiohttp.payload.Payload`]]
+        data: Optional[:class:`dict` | :class:`str` | :class:`aiohttp.payload.Payload`]
             The data which will be added to the request.
             |default| :data:`None`
 
-        headers: Optional[:class:`Dict`]
+        headers: Optional[:class:`dict`]
             The request headers.
             |default| :data:`None`
 
-        params: Optional[:class:`Dict`]
+        params: Optional[:class:`dict`]
             The query parameters to add to the request.
             |default| :data:`None`
 
@@ -195,7 +196,7 @@ class HTTPClient:
             content_type: str,
             data: Optional[str],
             _ttl: int,
-    ) -> Optional[Dict]:
+    ) -> Optional[dict]:
         """
         Handle responses from the discord API.
 
@@ -293,8 +294,8 @@ class HTTPClient:
     async def delete(
             self,
             route: str,
-            headers: Optional[Dict[str, Any]] = None
-    ) -> Optional[Dict]:
+            headers: Optional[dict[str, Any]] = None
+    ) -> Optional[dict]:
         """|coro|
 
         Sends a delete request to a Discord REST endpoint.
@@ -303,13 +304,13 @@ class HTTPClient:
         ----------
         route : :class:`str`
             The Discord REST endpoint to send a delete request to.
-        headers: Optional[Dict[:class:`str`, Any]]
+        headers:
             The request headers.
             |default| :data:`None`
 
         Returns
         -------
-        Optional[:class:`Dict`]
+        Optional[:class:`dict`]
             The response from discord.
         """
         return await self.__send(
@@ -321,8 +322,8 @@ class HTTPClient:
     async def get(
         self,
         route: str,
-        params: Optional[Dict] = None
-    ) -> Optional[Dict]:
+        params: Optional[dict] = None
+    ) -> Optional[dict]:
         """|coro|
 
         Sends a get request to a Discord REST endpoint.
@@ -331,13 +332,13 @@ class HTTPClient:
         ----------
         route : :class:`str`
             The Discord REST endpoint to send a get request to.
-        params: Optional[:class:`Dict`]
+        params: Optional[:class:`dict`]
             The query parameters to add to the request.
             |default| :data:`None`
 
         Returns
         -------
-        Optional[:class:`Dict`]
+        Optional[:class:`dict`]
             The response from discord.
         """
         return await self.__send(
@@ -346,7 +347,7 @@ class HTTPClient:
             params=params
         )
 
-    async def head(self, route: str) -> Optional[Dict]:
+    async def head(self, route: str) -> Optional[dict]:
         """|coro|
 
         Sends a head request to a Discord REST endpoint.
@@ -358,12 +359,12 @@ class HTTPClient:
 
         Returns
         -------
-        Optional[:class:`Dict`]
+        Optional[:class:`dict`]
             The response from discord.
         """
         return await self.__send(self.__session.head, route)
 
-    async def options(self, route: str) -> Optional[Dict]:
+    async def options(self, route: str) -> Optional[dict]:
         """|coro|
 
         Sends an options request to a Discord REST endpoint.
@@ -375,7 +376,7 @@ class HTTPClient:
 
         Returns
         -------
-        Optional[:class:`Dict`]
+        Optional[:class:`dict`]
             The response from discord.
         """
         return await self.__send(self.__session.options, route)
@@ -383,10 +384,10 @@ class HTTPClient:
     async def patch(
             self,
             route: str,
-            data: Optional[Dict] = None,
+            data: Optional[dict] = None,
             content_type: str = "application/json",
-            headers: Optional[Dict[str, Any]] = None
-    ) -> Optional[Dict]:
+            headers: Optional[dict[str, Any]] = None
+    ) -> Optional[dict]:
         """|coro|
 
         Sends a patch request to a Discord REST endpoint.
@@ -395,17 +396,17 @@ class HTTPClient:
         ----------
         route : :class:`str`
             The Discord REST endpoint to send a patch request to.
-        data : :class:`Dict`
+        data : :class:`dict`
             The update data for the patch request.
         content_type: :class:`str`
             Body content type.
             |default| ``application/json``
-        headers: Optional[Dict[:class:`str`, Any]]
+        headers:
             The request headers.
 
         Returns
         -------
-        Optional[:class:`Dict`]
+        Optional[:class:`dict`]
             JSON response from the discord API.
         """
         return await self.__send(
@@ -419,10 +420,10 @@ class HTTPClient:
     async def post(
             self,
             route: str,
-            data: Optional[Dict] = None,
+            data: Optional[dict] = None,
             content_type: str = "application/json",
-            headers: Optional[Dict[str, Any]] = None
-    ) -> Optional[Dict]:
+            headers: Optional[dict[str, Any]] = None
+    ) -> Optional[dict]:
         """|coro|
 
         Sends a post request to a Discord REST endpoint
@@ -431,16 +432,16 @@ class HTTPClient:
         ----------
         route : :class:`str`
             The Discord REST endpoint to send a patch request to.
-        data : Dict
+        data : dict
             The update data for the patch request.
         content_type : :class:`str`
             Body content type. |default| ``application/json``
-        headers: Optional[Dict[:class:`str`, Any]]
+        headers:
             The request headers.
 
         Returns
         -------
-        Optional[:class:`Dict`]
+        Optional[:class:`dict`]
             JSON response from the discord API.
         """
         return await self.__send(
@@ -454,10 +455,10 @@ class HTTPClient:
     async def put(
             self,
             route: str,
-            data: Optional[Dict] = None,
+            data: Optional[dict] = None,
             content_type: str = "application/json",
-            headers: Optional[Dict[str, Any]] = None
-    ) -> Optional[Dict]:
+            headers: Optional[dict[str, Any]] = None
+    ) -> Optional[dict]:
         """|coro|
 
         Sends a put request to a Discord REST endpoint
@@ -466,16 +467,16 @@ class HTTPClient:
         ----------
         route : :class:`str`
             The Discord REST endpoint to send a patch request to.
-        data : Dict
+        data : dict
             The update data for the patch request.
         content_type : :class:`str`
             Body content type. |default| ``application/json``
-        headers: Optional[Dict[:class:`str`, Any]]
+        headers:
             The request headers.
 
         Returns
         -------
-        Optional[:class:`Dict`]
+        Optional[:class:`dict`]
             JSON response from the discord API.
         """
         return await self.__send(

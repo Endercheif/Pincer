@@ -19,20 +19,25 @@ Gateway
 -------
 
 Gateway
-~~~~~~~~~~
+~~~~~~~
 
 .. attributetable:: Gateway
 
 .. autoclass:: Gateway()
 
 GatewayInfo
-~~~~~~~~~~
+~~~~~~~~~~~
 
 .. attributetable:: GatewayInfo
 
 .. autoclass:: GatewayInfo()
 
+SessionStartLimit
+~~~~~~~~~~~~~~~~~
 
+.. attributetable:: SessionStartLimit
+
+.. autoclass:: SessionStartLimit()
 
 Http
 ----
@@ -43,7 +48,6 @@ HTTPClient
 .. attributetable:: HTTPClient
 
 .. autoclass:: HTTPClient()
-    :exclude-members: __send, __handle_response
 
 Rate Limiting
 -------------
