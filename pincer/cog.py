@@ -68,7 +68,7 @@ class CogManager:
 
     def load_cogs(self, *cogs: Type[Cog]):
         """
-        Loads a list of cogs
+        Loads a list of cogs.
 
         Parameters
         ----------
@@ -93,7 +93,7 @@ class CogManager:
                 self.load_cog(item)
 
     def reload_cogs(self):
-        """Reloads all of the loaded cogs"""
+        """Reloads all the loaded cogs."""
 
         modules = []
 
@@ -135,7 +135,7 @@ class CogManager:
 
 class Cog(Interactable):
     """A cog object
-    This is an object that can register commands and message components that isn't a
+    This is an object that can register commands and message components that aren't a
     client. It also can be loaded and unloaded at runtime so commands can be changed
     without restarting the bot.
     """
