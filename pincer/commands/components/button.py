@@ -88,16 +88,16 @@ class LinkButton(_Component):
     Attributes
     ----------
     label: APINullable[:class:`str`]
-        text that appears on the button, max 80 characters
+        Text that appears on the button, max 80 characters.
     emoji: APINullable[:class:`~pincer.objects.message.emoji.Emoji`]
-        ``name``, ``id``, and ``animated``
+        ``name``, ``id``, and ``animated``.
     custom_id: APINullable[:class:`str`]
         A developer-defined identifier for the button,
-        max 100 characters
+        max 100 characters.
     url: APINullable[:class:`str`]
-        A url for link-style buttons
+        A url for link-style buttons.
     disabled: APINullable[:class:`bool`]
-        Whether the button is disabled (default `False`)
+        Whether the button is disabled. (default `False`)
     """
 
     label: str

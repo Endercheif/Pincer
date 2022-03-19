@@ -28,8 +28,7 @@ _log = logging.getLogger(__name__)
 class ChatCommandHandler(metaclass=Singleton):
     """Singleton containing methods used to handle various commands
 
-    The register and built_register
-    -------------------------------
+    The register and built_register:\n
     I found the way Discord expects commands to be registered to be very different than
     how you want to think about command registration. i.e. Discord wants nesting but we
     don't want any nesting. Nesting makes it hard to think about commands and also will
