@@ -1,17 +1,20 @@
 # Copyright Pincer 2021-Present
 # Full MIT License can be found in `LICENSE` at the project root.
+from __future__ import annotations
 
 import logging
-from typing import Any, List, Tuple, Union, T
+from typing import Any, TypeVar, Type
 
 from ..utils.types import MISSING
 from ..objects.app.command import AppCommandOptionChoice
 
 _log = logging.getLogger(__name__)
 
+T = TypeVar("T")
+
 
 class _CommandTypeMeta(type):
-    def __getitem__(cls, args: Union[Tuple, Any]):
+    def __getitem__(cls, args: tuple | Any):
         if not isinstance(args, tuple):
             args = (args,)
 
@@ -20,7 +23,7 @@ class _CommandTypeMeta(type):
 
 class CommandArg(metaclass=_CommandTypeMeta):
     """
-    Holds the parameters of an application command option
+    Holds the parameters of an application command option.
 
     .. note::
         Deprecated. :class:`typing.Annotated` or :class:`typing_extensions.Annotated`
@@ -43,12 +46,12 @@ class CommandArg(metaclass=_CommandTypeMeta):
     Parameters
     ----------
     command_type : T
-        The type of the command
+        The type of the command.
     \\*args : :class:`~pincer.commands.arg_types.Modifier`
 
     """
 
-    def __init__(self, command_type, *args):
+    def __init__(self, command_type: T, *args: Modifier):
         self.command_type = command_type
         self.modifiers = args
         _log.warning(
@@ -58,7 +61,7 @@ class CommandArg(metaclass=_CommandTypeMeta):
             " more information."
         )
 
-    def get_arg(self, arg_type: T) -> T:
+    def get_arg(self, arg_type: Type[T]) -> T:
         for arg in self.modifiers:
             if isinstance(arg, arg_type):
                 return arg.get_payload()
@@ -90,7 +93,7 @@ class Modifier(metaclass=_CommandTypeMeta):
 
 class Description(Modifier):
     """
-    Represents the description of an application command option
+    Represents the description of an application command option.
 
     .. code-block:: python3
 
@@ -106,7 +109,7 @@ class Description(Modifier):
         The description for the command.
     """
 
-    def __init__(self, desc):
+    def __init__(self, desc: str):
         self.desc = str(desc)
 
     def get_payload(self) -> str:
@@ -115,7 +118,7 @@ class Description(Modifier):
 
 class Choice(Modifier):
     """
-    Represents a choice that the user can pick from
+    Represents a choice that the user can pick from.
 
     .. code-block:: python3
 
@@ -127,12 +130,12 @@ class Choice(Modifier):
     Parameters
     ----------
     name : str
-        The name of the choice
-    value : Union[int, str, float]
-        The value of the choice
+        The name of the choice.
+    value : int | str | float
+        The value of the choice.
     """
 
-    def __init__(self, name, value):
+    def __init__(self, name: str, value: int | str | float):
         self.name = name
         self.value = value
 
@@ -154,12 +157,12 @@ class Choices(Modifier):
 
     Parameters
     ----------
-    \\*choices : Union[:class:`~pincer.commands.arg_types.Choice`, str, int, float]
+    \\*choices : :class:`~pincer.commands.arg_types.Choice` | :class:`str` | :class:`int` | :class:`float`
         A choice. If the type is not :class:`~pincer.commands.arg_types.Choice`,
         the same value will be used for the choice name and value.
     """
 
-    def __init__(self, *choices):
+    def __init__(self, *choices: Choice | str | int | float):
         self.choices = []
 
         for choice in choices:
@@ -173,7 +176,7 @@ class Choices(Modifier):
                 AppCommandOptionChoice(name=str(choice), value=choice)
             )
 
-    def get_payload(self) -> List[AppCommandOptionChoice]:
+    def get_payload(self) -> list[AppCommandOptionChoice]:
         return self.choices
 
 
@@ -195,11 +198,11 @@ class ChannelTypes(Modifier):
 
     Parameters
     ----------
-    \\*types : :class:`~pincer.objects.guild.channel.ChannelType`
+    \\*types : :class:`~pincer.objects.guild.channel.ChannelTypes`
         A list of channel types that the user can pick from.
     """
 
-    def __init__(self, *types):
+    def __init__(self, *types: ChannelTypes):
         self.types = types
 
     def get_payload(self):
@@ -220,11 +223,11 @@ class MaxValue(Modifier):
 
     Parameters
     ----------
-    max_value : Union[:class:`float`, :class:`int`]
+    max_value : :class:`float` | :class:`int`
         The max value a user can choose.
     """
 
-    def __init__(self, max_value):
+    def __init__(self, max_value: float | int):
         self.max_value = max_value
 
     def get_payload(self):
@@ -245,7 +248,7 @@ class MinValue(Modifier):
 
     Parameters
     ----------
-    min_value : Union[:class:`float`, :class:`int`]
+    min_value : float | int
         The minimum value a user can choose.
     """
 

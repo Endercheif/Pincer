@@ -8,7 +8,7 @@ import re
 from asyncio import iscoroutinefunction
 from functools import partial
 from inspect import Signature, isasyncgenfunction, _empty
-from typing import TYPE_CHECKING, Any, Callable, TypeVar, Union, List
+from typing import TYPE_CHECKING, Any, Callable, TypeVar, Type
 
 from . import __package__
 from .chat_command_handler import (
@@ -84,23 +84,23 @@ def command(
     name: Optional[str] = None,
     description: Optional[str] = "Description not set",
     enable_default: Optional[bool] = True,
-    guild: Union[Snowflake, int, str] = None,
+    guild: Snowflake | int | str = None,
     cooldown: Optional[int] = 0,
     cooldown_scale: Optional[float] = 60.0,
     cooldown_scope: Optional[ThrottleScope] = ThrottleScope.USER,
-    parent: Optional[Union[Group, Subgroup]] = None
+    parent: Optional[Group | Subgroup] = None
 ):
     """A decorator to create a slash command to register and respond to
     with the discord API from a function.
 
-    str - String
-    int - Integer
-    bool - Boolean
-    float - Number
-    pincer.objects.User - User
-    pincer.objects.Channel - Channel
-    pincer.objects.Role - Role
-    pincer.objects.Mentionable - Mentionable
+    - str - String
+    - int - Integer
+    - bool - Boolean
+    - float - Number
+    - pincer.objects.User - User
+    - pincer.objects.Channel - Channel
+    - pincer.objects.Role - Role
+    - pincer.objects.Mentionable - Mentionable
 
     .. code-block:: python3
 
@@ -147,41 +147,41 @@ def command(
 
     Parameters
     ----------
-    name : Optional[:class:`str`]
-        The name of the command |default| :data:`None`
-    description : Optional[:class:`str`]
-        The description of the command |default| ``Description not set``
-    enable_default : Optional[:class:`bool`]
-        Whether the command is enabled by default |default| :data:`True`
-    guild : Optional[Union[:class:`~pincer.utils.snowflake.Snowflake`, :class:`int`, :class:`str`]]
-        What guild to add it to (don't specify for global) |default| :data:`None`
-    cooldown : Optional[:class:`int`]
-        The amount of times in the cooldown_scale the command can be invoked
+    name :
+        The name of the command. |default| :data:`None`
+    description :
+        The description of the command. |default| ``Description not set``
+    enable_default :
+        Whether the command is enabled by default. |default| :data:`True`
+    guild :
+        What guild to add it to (don't specify for global). |default| :data:`None`
+    cooldown :
+        The amount of times in the cooldown_scale the command can be invoked.
         |default| ``0``
-    cooldown_scale : Optional[:class:`float`]
-        The 'checking time' of the cooldown |default| ``60``
-    cooldown_scope : :class:`~pincer.objects.app.throttle_scope.ThrottleScope`
-        What type of cooldown strategy to use |default| :attr:`ThrottleScope.USER`
+    cooldown_scale :
+        The 'checking time' of the cooldown. |default| ``60``
+    cooldown_scope :
+        What type of cooldown strategy to use. |default| :attr:`ThrottleScope.USER`
 
     Raises
     ------
-    CommandIsNotCoroutine
-        If the command function is not a coro
-    InvalidCommandName
-        If the command name does not follow the regex ``^[\\w-]{1,32}$``
-    InvalidCommandGuild
-        If the guild id is invalid
-    CommandDescriptionTooLong
-        Descriptions max 100 characters
-        If the annotation on an argument is too long (also max 100)
-    CommandAlreadyRegistered
-        If the command already exists
-    TooManyArguments
-        Max 25 arguments to pass for commands
-    InvalidArgumentAnnotation
+    :exc:`~pincer.exceptions.CommandIsNotCoroutine`
+        If the command function is not a coro.
+    :exc:`~pincer.exceptions.InvalidCommandName`
+        If the command name does not follow the regex ``^[\\w-]{1,32}$``.
+    :exc:`~pincer.exceptions.InvalidCommandGuild`
+        If the guild id is invalid.
+    :exc:`~pincer.exceptions.CommandDescriptionTooLong`
+        Descriptions max 100 characters.
+        If the annotation on an argument is too long (also max 100).
+    :exc:`~pincer.exceptions.CommandAlreadyRegistered`
+        If the command already exists.
+    :exc:`~pincer.exceptions.TooManyArguments`
+        Max 25 arguments to pass for commands.
+    :exc:`~pincer.exceptions.InvalidArgumentAnnotation`
         Annotation amount is max 25,
         Not a valid argument type,
-        Annotations must consist of name and value
+        Annotations must consist of name and value.
     """  # noqa: E501
     if func is None:
         return partial(
@@ -205,7 +205,7 @@ def command(
             f" {CHAT_INPUT_COMMAND_NAME_REGEX.pattern}"
         )
 
-    options: List[AppCommandOption] = []
+    options: list[AppCommandOption] = []
 
     signature, params = get_signature_and_params(func)
     pass_context = should_pass_ctx(signature, params)
@@ -259,7 +259,7 @@ def command(
 
         command_type = _options_type_link[argument_type]
 
-        def get_arg(t: T) -> APINullable[T]:
+        def get_arg(t: Type[T]) -> APINullable[T]:
             if type(annotation) is CommandArg:
                 return annotation.get_arg(t)
             elif hasattr(annotation, "__metadata__"):
@@ -355,7 +355,7 @@ def user_command(
     *,
     name: Optional[str] = None,
     enable_default: Optional[bool] = True,
-    guild: Union[Snowflake, int, str] = None,
+    guild: Snowflake | int | str = None,
     cooldown: Optional[int] = 0,
     cooldown_scale: Optional[float] = 60,
     cooldown_scope: Optional[ThrottleScope] = ThrottleScope.USER,
@@ -390,37 +390,37 @@ def user_command(
 
     Parameters
     ----------
-    name : Optional[:class:`str`]
-        The name of the command |default| :data:`None`
-    enable_default : Optional[:class:`bool`]
-        Whether the command is enabled by default |default| :data:`True`
-    guild : Optional[Union[:class:`~pincer.utils.snowflake.Snowflake`, :class:`int`, :class:`str`]]
-        What guild to add it to (don't specify for global) |default| :data:`None`
-    cooldown : Optional[:class:`int`]
-        The amount of times in the cooldown_scale the command can be invoked
+    name :
+        The name of the command. |default| :data:`None`
+    enable_default :
+        Whether the command is enabled by default. |default| :data:`True`
+    guild :
+        What guild to add it to (don't specify for global). |default| :data:`None`
+    cooldown :
+        The amount of times in the cooldown_scale the command can be invoked.
         |default| ``0``
-    cooldown_scale : Optional[:class:`float`]
-        The 'checking time' of the cooldown |default| ``60``
-    cooldown_scope : :class:`~pincer.objects.app.throttle_scope.ThrottleScope`
-        What type of cooldown strategy to use |default| :attr:`ThrottleScope.USER`
+    cooldown_scale :
+        The 'checking time' of the cooldown. |default| ``60``
+    cooldown_scope :
+        What type of cooldown strategy to use. |default| :attr:`ThrottleScope.USER`
 
     Raises
     ------
-    CommandIsNotCoroutine
-        If the command function is not a coro
-    InvalidCommandName
-        If the command name does not follow the regex ``^[\\w-]{1,32}$``
-    InvalidCommandGuild
-        If the guild id is invalid
-    CommandDescriptionTooLong
-        Descriptions max 100 characters
-        If the annotation on an argument is too long (also max 100)
-    CommandAlreadyRegistered
-        If the command already exists
-    InvalidArgumentAnnotation
+    :exc:`~pincer.exceptions.CommandIsNotCoroutine`
+        If the command function is not a coro.
+    :exc:`~pincer.exceptions.InvalidCommandName`
+        If the command name does not follow the regex. ``^[\\w-]{1,32}$``
+    :exc:`~pincer.exceptions.InvalidCommandGuild`
+        If the guild id is invalid.
+    :exc:`~pincer.exceptions.CommandDescriptionTooLong`
+        Descriptions max 100 characters.
+        If the annotation on an argument is too long (also max 100).
+    :exc:`~pincer.exceptions.CommandAlreadyRegistered`
+        If the command already exists.
+    :exc:`~pincer.exceptions.InvalidArgumentAnnotation`
         Annotation amount is max 25,
         Not a valid argument type,
-        Annotations must consist of name and value
+        Annotations must consist of name and value.
     """  # noqa: E501
     if func is None:
         return partial(
@@ -450,7 +450,7 @@ def message_command(
     *,
     name: Optional[str] = None,
     enable_default: Optional[bool] = True,
-    guild: Union[Snowflake, int, str] = None,
+    guild: Snowflake | int | str = None,
     cooldown: Optional[int] = 0,
     cooldown_scale: Optional[float] = 60,
     cooldown_scope: Optional[ThrottleScope] = ThrottleScope.USER,
@@ -480,37 +480,37 @@ def message_command(
 
     Parameters
     ----------
-    name : Optional[:class:`str`]
-        The name of the command |default| :data:`None`
-    enable_default : Optional[:class:`bool`]
-        Whether the command is enabled by default |default| :data:`True`
-    guild : Optional[Union[:class:`~pincer.utils.snowflake.Snowflake`, :class:`int`, :class:`str`]]
-        What guild to add it to (don't specify for global) |default| :data:`None`
-    cooldown : Optional[:class:`int`]
-        The amount of times in the cooldown_scale the command can be invoked
+    name :
+        The name of the command. |default| :data:`None`
+    enable_default :
+        Whether the command is enabled by default. |default| :data:`True`
+    guild :
+        What guild to add it to (don't specify for global). |default| :data:`None`
+    cooldown :
+        The amount of times in the cooldown_scale the command can be invoked.
         |default| ``0``
-    cooldown_scale : Optional[:class:`float`]
-        The 'checking time' of the cooldown |default| ``60``
-    cooldown_scope : :class:`~pincer.objects.app.throttle_scope.ThrottleScope`
-        What type of cooldown strategy to use |default| :attr:`ThrottleScope.USER`
+    cooldown_scale :
+        The 'checking time' of the cooldown. |default| ``60``
+    cooldown_scope :
+        What type of cooldown strategy to use. |default| :attr:`ThrottleScope.USER`
 
     Raises
     ------
-    CommandIsNotCoroutine
-        If the command function is not a coro
-    InvalidCommandName
-        If the command name does not follow the regex ``^[\\w-]{1,32}$``
-    InvalidCommandGuild
-        If the guild id is invalid
-    CommandDescriptionTooLong
-        Descriptions max 100 characters
-        If the annotation on an argument is too long (also max 100)
-    CommandAlreadyRegistered
-        If the command already exists
-    InvalidArgumentAnnotation
+    :exc:`~pincer.exceptions.CommandIsNotCoroutine`
+        If the command function is not a coro.
+    :exc:`~pincer.exceptions.InvalidCommandName`
+        If the command name does not follow the regex. ``^[\\w-]{1,32}$``
+    :exc:`~pincer.exceptions.InvalidCommandGuild`
+        If the guild id is invalid.
+    :exc:`~pincer.exceptions.CommandDescriptionTooLong`
+        Descriptions max 100 characters.
+        If the annotation on an argument is too long. (also max 100)
+    :exc:`~pincer.exceptions.CommandAlreadyRegistered`
+        If the command already exists.
+    :exc:`~pincer.exceptions.InvalidArgumentAnnotation`
         Annotation amount is max 25,
         Not a valid argument type,
-        Annotations must consist of name and value
+        Annotations must consist of name and value.
     """  # noqa: E501
     if func is None:
         return partial(
@@ -541,12 +541,12 @@ def register_command(
     name: Optional[str] = None,
     description: Optional[str] = MISSING,
     enable_default: Optional[bool] = True,
-    guild: Optional[Union[Snowflake, int, str]] = None,
+    guild: Optional[Snowflake | int | str] = None,
     cooldown: Optional[int] = 0,
     cooldown_scale: Optional[float] = 60.0,
     cooldown_scope: Optional[ThrottleScope] = ThrottleScope.USER,
     command_options=MISSING,  # Missing typehint?
-    parent: Optional[Union[Group, Subgroup]] = MISSING
+    parent: Optional[Group | Subgroup] = MISSING
 ):
     cmd = name or func.__name__
 

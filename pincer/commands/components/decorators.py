@@ -1,10 +1,10 @@
 # Copyright Pincer 2021-Present
 # Full MIT License can be found in `LICENSE` at the project root.
 
+from __future__ import annotations
+
 from functools import partial
 from inspect import iscoroutinefunction
-from typing import List
-
 
 from .button import Button, ButtonStyle
 from .select_menu import SelectMenu, SelectOption
@@ -15,7 +15,7 @@ from ...objects.message.emoji import Emoji
 from ...utils.conversion import remove_none
 
 
-def component(custom_id):
+def component(custom_id: str):
     """
     Generic handler for Message Components. Can be used with manually constructed
     :class:`~pincer.commands.components.button.Button` and
@@ -23,7 +23,7 @@ def component(custom_id):
 
     Parameters
     ---------
-    custom_id : str
+    custom_id :
         The ID of the message component to handle.
     """
     def wrap(custom_id, func):
@@ -103,7 +103,7 @@ def button(
 
 def select_menu(
     func=None,
-    options: List[SelectOption] = None,
+    options: list[SelectOption] = None,
     placeholder: str = None,
     min_values: int = None,
     max_values: int = None,
@@ -137,7 +137,7 @@ def select_menu(
                 SelectOption(label="Option 1"),
                 SelectOption(label="Option 2", value="value different than label")
             ])
-            async def select_menu(values: List[str]):
+            async def select_menu(values: list[str]):
                 return f"{values[0]} selected"
 
     """  # noqa: E501

@@ -10,7 +10,6 @@ from .chat_command_handler import ChatCommandHandler
 from .components.component_handler import ComponentHandler
 from ..objects.app.command import AppCommand, InteractableStructure
 
-
 INTERACTION_REGISTERS = ChainMap(ChatCommandHandler.register, ComponentHandler.register)
 
 
@@ -22,6 +21,8 @@ class Interactable:
     PartialInteractable objects are registered by running the register function and
     setting an attribute of the client to the result.
     """
+
+    # TODO: Fix these docs
 
     def __init__(self):
         for value in vars(type(self)).values():

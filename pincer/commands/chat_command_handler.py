@@ -16,7 +16,7 @@ from ..objects.app.command import AppCommand, AppCommandOption
 from ..objects.app.command_types import AppCommandOptionType, AppCommandType
 
 if TYPE_CHECKING:
-    from typing import List, Dict, Optional, ValuesView, Union
+    from typing import Optional, ValuesView
     from .interactable import Interactable
     from ..client import Client
     from ..utils.snowflake import Snowflake
@@ -49,20 +49,20 @@ class ChatCommandHandler(metaclass=Singleton):
     Attributes
     ----------
     client: :class:`Client`
-        The client object
-    managers: Dict[:class:`str`, :class:`~typing.Any`]
-        Dictionary of managers
-    register: Dict[:class:`str`, :class:`~pincer.objects.app.command.InteractableStructure`[:class:`~pincer.objects.app.command.AppCommand`]]
-        Dictionary of ``InteractableStructure``
-    built_register: Dict[:class:`str`, :class:`~pincer.objects.app.command.AppCommand`]]
+        The client object.
+    managers: :class:`dict`\\[:class:`str`, :class:`~typing.Any`]
+        Dictionary of managers.
+    register: :class:`dict`\\[:class:`str`, :class:`~pincer.objects.app.command.InteractableStructure`\\[:class:`~pincer.objects.app.command.AppCommand`]]
+        Dictionary of ``InteractableStructure``.
+    built_register: :class:`dict`\\[:class:`str`, :class:`~pincer.objects.app.command.AppCommand`]]
         Dictionary of ``InteractableStructure`` where the commands are converted to
         the format that Discord expects for sub commands and sub command groups.
     """  # noqa: E501
 
     has_been_initialized = False
-    managers: List[Interactable] = []
-    register: Dict[str, InteractableStructure[AppCommand]] = {}
-    built_register: Dict[str, AppCommand] = {}
+    managers: list[Interactable] = []
+    register: dict[str, InteractableStructure[AppCommand]] = {}
+    built_register: dict[str, AppCommand] = {}
 
     # Endpoints:
     __get = "/commands"
@@ -76,21 +76,21 @@ class ChatCommandHandler(metaclass=Singleton):
 
     def __init__(self, client: Client):
         self.client = client
-        self._api_commands: List[AppCommand] = []
+        self._api_commands: list[AppCommand] = []
         _log.debug(
             "%i commands registered.", len(ChatCommandHandler.register)
         )
 
         self.__prefix = f"applications/{self.client.bot.id}"
 
-    async def get_commands(self) -> List[AppCommand]:
+    async def get_commands(self) -> list[AppCommand]:
         """|coro|
 
-        Get a list of app commands from Discord
+        Get a list of app commands from Discord.
 
         Returns
         -------
-        List[:class:`~pincer.objects.app.command.AppCommand`]
+        :class:`list`\\[:class:`~pincer.objects.app.command.AppCommand`]
             List of commands.
         """
         # TODO: Update if discord adds bulk get guild commands
@@ -112,12 +112,12 @@ class ChatCommandHandler(metaclass=Singleton):
     async def remove_command(self, cmd: AppCommand):
         """|coro|
 
-        Remove a specific command
+        Remove a specific command.
 
         Parameters
         ----------
-        cmd : :class:`~pincer.objects.app.command.AppCommand`
-            What command to delete
+        cmd :
+            The command to delete.
         """
         # TODO: Update if discord adds bulk delete commands
         if cmd.guild_id:
@@ -138,12 +138,12 @@ class ChatCommandHandler(metaclass=Singleton):
     async def add_command(self, cmd: AppCommand):
         """|coro|
 
-        Add an app command
+        Add an app command.
 
         Parameters
         ----------
-        cmd : :class:`~pincer.objects.app.command.AppCommand`
-            Command to add
+        cmd :
+            Command to add.
         """
         _log.info("Updated or registered command `%s` to Discord", cmd.name)
 
@@ -156,15 +156,15 @@ class ChatCommandHandler(metaclass=Singleton):
             self.__prefix + add_endpoint, data=cmd.to_dict()
         )
 
-    async def add_commands(self, commands: List[AppCommand]):
+    async def add_commands(self, commands: list[AppCommand]):
         """|coro|
 
-        Add a list of app commands
+        Add a list of app commands.
 
         Parameters
         ----------
-        commands : List[:class:`~pincer.objects.app.command.AppCommand`]
-            List of command objects to add
+        commands :
+            List of command objects to add.
         """
         await gather(*map(self.add_command, commands))
 
@@ -313,7 +313,7 @@ class ChatCommandHandler(metaclass=Singleton):
         """|coro|
 
         Remove commands that are registered by discord but not in use
-        by the current client
+        by the current client.
         """
         local_registered_commands = self.get_local_registered_commands()
 
@@ -360,7 +360,7 @@ class ChatCommandHandler(metaclass=Singleton):
     async def initialize(self):
         """|coro|
 
-        Call methods of this class to refresh all app commands
+        Call methods of this class to refresh all app commands.
         """
         if ChatCommandHandler.has_been_initialized:
             # Only first shard should be initialized.
@@ -401,7 +401,7 @@ def _hash_app_command(
 
 def _hash_app_command_params(
     name: str,
-    guild_id: Union[Snowflake, None, MISSING],
+    guild_id: Optional[Snowflake | MISSING],
     app_command_type: AppCommandType,
     group: Optional[str],
     sub_group: Optional[str]
@@ -423,16 +423,16 @@ def _hash_app_command_params(
 
     Parameters
     ----------
-    name : str
+    name :
         The name of the function for the command
-    guild_id : Union[:class:`~pincer.utils.snowflake.Snowflake`, None, MISSING]
+    guild_id :
         The ID of a guild, None, or MISSING.
     app_command_type : :class:`~pincer.objects.app.command_types.AppCommandType`
         The app command type of the command. NOT THE OPTION TYPE.
-    group : str
+    group :
         The highest level of organization the command is it. This should always be the
         name of the base command. :data:`None` or :data:`MISSING` if not there.
-    sub_option : str
+    sub_group :
         The name of the group that holds the lowest level of options. :data:`None` or
         :data:`MISSING` if not there.
     """

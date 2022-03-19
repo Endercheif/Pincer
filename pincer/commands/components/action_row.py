@@ -3,14 +3,10 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from ._component import _Component
 from ...objects.app.command import InteractableStructure
 
 from ...utils.api_object import APIObject
-if TYPE_CHECKING:
-    from typing import Dict
 
 
 class ActionRow(APIObject):
@@ -18,16 +14,14 @@ class ActionRow(APIObject):
 
     Parameters
     ----------
-    \\*components : :class:`~pincer.objects.message.component.MessageComponent`
-        :class:`~pincer.objects.message.component.MessageComponent`,
-        :class:`~pincer.objects.message.button.Button`, or
-        :class:`~pincer.objects.message.select_menu.SelectMenu`
+    \\*components : :class:`~pincer.objects.app.command.InteractableStructure`
+        The components to add to the row.
     """
 
     def __init__(self, *components: InteractableStructure[_Component]):
         self.components = components
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> dict:
         return {
             "type": 1,
             "components": [
