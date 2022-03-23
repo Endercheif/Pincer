@@ -25,15 +25,12 @@ async def message_delete_bulk_middleware(
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the message delete bulk event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.events.message.MessageDeleteBulkEvent`]
-        ``on_message_delete_bulk`` and an ``MessageDeleteBulkEvent``
     """
     return (
         "on_message_delete_bulk",

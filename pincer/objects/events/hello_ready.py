@@ -9,8 +9,6 @@ from ...utils.api_object import APIObject
 from ...utils.types import MISSING, APINullable
 
 if TYPE_CHECKING:
-    from typing import List, Tuple
-
     from ..user.user import User
     from ..guild.guild import Guild
     from ..app.application import Application
@@ -23,9 +21,10 @@ class HelloEvent(APIObject):
 
     Attributes
     ----------
-    heartbeat_interval: :class:`int`
-        The interval (in milliseconds) the client should heartbeat with
+    heartbeat_interval : :class:`int`
+        The interval (in milliseconds) the client should heartbeat with.
     """
+
     heartbeat_interval: int
 
 
@@ -36,24 +35,25 @@ class ReadyEvent(APIObject):
 
     Attributes
     ----------
-    v: :class:`int`
-        Gateway version
-    user: :class:`~pincer.objects.user.user.User`
-        Information about the user including email
-    guilds: List[:class:`~pincer.objects.guild.guild.Guild`]
-        The guilds the user is in
-    session_id: :class:`str`
-        Used for resuming connections
-    application: :class:`~pincer.objects.app.application.Application`
-        Contains ``id`` and ``flags``
-    shard: APINullable[Tuple[:class:`int`, :class:`int`]]
+    v : :class:`int`
+        Gateway version.
+    user : :class:`~pincer.objects.user.user.User`
+        Information about the user including email.
+    guilds : :class:`list`\\[:class:`~pincer.objects.guild.guild.Guild`]
+        The guilds the user is in.
+    session_id : :class:`str`
+        Used for resuming connections.
+    application : :class:`~pincer.objects.app.application.Application`
+        Contains ``id`` and ``flags``.
+    shard : APINullable[:class:`tuple`\\[:class:`int`, :class:`int`]]
         The shard information associated
-        with this session, if sent when identifying
+        with this session, if sent when identifying.
     """
+
     v: int
     user: User
-    guilds: List[Guild]
+    guilds: list[Guild]
     session_id: str
     application: Application
 
-    shard: APINullable[Tuple[int, int]] = MISSING
+    shard: APINullable[tuple[int, int]] = MISSING

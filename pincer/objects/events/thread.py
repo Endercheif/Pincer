@@ -10,8 +10,6 @@ from ...utils.api_object import APIObject, GuildProperty
 from ...utils.types import APINullable, MISSING
 
 if TYPE_CHECKING:
-    from typing import List
-
     from ..guild.channel import Channel
     from ..guild.thread import ThreadMember
     from ...utils.snowflake import Snowflake
@@ -23,26 +21,27 @@ class ThreadListSyncEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The id of the guild
-    threads: List[:class:`~pincer.objects.guild.channel.Channel`]
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The ID of the guild.
+    threads : :class:`list`\\[:class:`~pincer.objects.guild.channel.Channel`]
         All active threads in the given channels that
-        the current user can access
-    members: List[:class:`~pincer.objects.guild.thread.ThreadMember`]
+        the current user can access.
+    members : :class:`list`\\[:class:`~pincer.objects.guild.thread.ThreadMember`]
         All thread member objects from the synced threads for
         the current user, indicating which threads the current
-        user has been added to
-    channel_ids: APINullable[List[:class:`~pincer.utils.snowflake.Snowflake`]]
+        user has been added to.
+    channel_ids : APINullable[:class:`list`\\[:class:`~pincer.utils.snowflake.Snowflake`]]
         The parent channel ids whose threads are being synced.
         If omitted, then threads were synced for the entire guild.
         This array may contain channel_ids that have no active
         threads as well, so you know to clear that data.
     """
-    guild_id: Snowflake
-    threads: List[Channel]
-    members: List[ThreadMember]
 
-    channel_ids: APINullable[List[Snowflake]] = MISSING
+    guild_id: Snowflake
+    threads: list[Channel]
+    members: list[ThreadMember]
+
+    channel_ids: APINullable[list[Snowflake]] = MISSING
 
 
 @dataclass(repr=False)
@@ -54,21 +53,22 @@ class ThreadMembersUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    id: :class:`~pincer.utils.snowflake.Snowflake`
-        The id of the thread
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The id of the guild
-    member_count: :class:`int`
-        The approximate number of members in the thread, capped at 50
-    added_members: APINullable[List[:class:`~pincer.objects.guild.thread.ThreadMember`]]
-        The users who were added to the thread
-    removed_member_ids: APINullable[List[:class:`~pincer.utils.snowflake.Snowflake`]]
-        The id of the users who were removed from the thread
+    id : :class:`~pincer.utils.snowflake.Snowflake`
+        The ID of the thread.
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The ID of the guild.
+    member_count : :class:`int`
+        The approximate number of members in the thread, capped at 50.
+    added_members : APINullable[:class:`list`\\[:class:`~pincer.objects.guild.thread.ThreadMember`]]
+        The users who were added to the thread.
+    removed_member_ids : APINullable[:class:`list`\\[:class:`~pincer.utils.snowflake.Snowflake`]]
+        The id of the users who were removed from the thread.
     """
+
     # noqa: E501
     id: Snowflake
     guild_id: Snowflake
     member_count: int
 
-    added_members: APINullable[List[ThreadMember]] = MISSING
-    removed_member_ids: APINullable[List[Snowflake]] = MISSING
+    added_members: APINullable[list[ThreadMember]] = MISSING
+    removed_member_ids: APINullable[list[Snowflake]] = MISSING

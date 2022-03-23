@@ -21,22 +21,19 @@ if TYPE_CHECKING:
 
 async def guild_member_chunk_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, GuildMembersChunkEvent]:
     """|coro|
 
     Middleware for the ``on_guild_member_chunk`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the guild member chunk event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.guild.GuildMembersChunkEvent`]
-        ``on_guild_member_chunk`` and a ``GuildMembersChunkEvent``
     """  # noqa: E501
 
     return (

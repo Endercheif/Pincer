@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def voice_state_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, VoiceState]:
     """|coro|
 
     Middleware for the ``on_voice_state_create`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the voice state create event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.user.voice_state.VoiceState`]
-        ``on_voice_state_create`` and a ``VoiceState``
     """
     return (
         "on_voice_state_create",

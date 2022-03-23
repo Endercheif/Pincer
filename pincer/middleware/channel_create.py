@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 from ..objects.guild.channel import Channel
 
 if TYPE_CHECKING:
-    from typing import Tuple
     from ..core.gateway import GatewayDispatch
     from ..client import Client
     from ..core.gateway import Gateway
@@ -17,22 +16,19 @@ if TYPE_CHECKING:
 
 async def channel_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-) -> Tuple[str, Channel]:
+) -> tuple[str, Channel]:
     """|coro|
 
     Middleware for the ``on_channel_creation`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the ready event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, List[:class:`~pincer.objects.guild.channel.Channel`]]
-        ``on_channel_creation`` and a channel.
     """
 
     channel: Channel = Channel.from_dict(payload.data)

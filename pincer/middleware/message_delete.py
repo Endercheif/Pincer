@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING
 from ..objects.events.message import MessageDeleteEvent
 
 if TYPE_CHECKING:
-    from typing import Tuple
-
     from ..client import Client
     from ..core.gateway import Gateway
     from ..core.gateway import GatewayDispatch
@@ -18,21 +16,18 @@ if TYPE_CHECKING:
 
 async def on_message_delete_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-) -> Tuple[str, MessageDeleteEvent]:
+) -> tuple[str, MessageDeleteEvent]:
     """|coro|
     Middleware for the ``on_message_delete`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the message delete event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.message.MessageDeleteEvent`]
-        ``on_message_delete`` and a ``MessageDeleteEvent``
     """  # noqa: E501
 
     return ("on_message_delete", MessageDeleteEvent.from_dict(payload.data))

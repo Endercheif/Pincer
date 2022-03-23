@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def voice_channel_select_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, VoiceChannelSelectEvent]:
     """|coro|
 
     Middleware for the ``on_voice_channel_select`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the voice channel select event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.voice.VoiceChannelSelectEvent`]
-        ``on_voice_channel_select`` and a ``VoiceChannelSelectEvent``
     """  # noqa: E501
     return (
         "on_voice_channel_select",

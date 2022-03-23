@@ -20,22 +20,19 @@ if TYPE_CHECKING:
 
 async def message_reaction_remove_emoji_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, MessageReactionRemoveEmojiEvent]:
     """|coro|
 
     Middleware for the ``on_message_reaction_remove_emoji`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the message reaction remove emoji event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.message.MessageReactionRemoveEmojiEvent`]
-        ``on_message_reaction_remove_emoji`` and an ``MessageReactionRemoveEmojiEvent``
     """  # noqa: E501
 
     return (

@@ -21,22 +21,19 @@ if TYPE_CHECKING:
 
 async def notification_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, NotificationCreateEvent]:
     """|coro|
 
     Middleware for the ``on_notification_create`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the notification create event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.notification.NotificationCreateEvent`]
-        ``on_notification_create`` and a ``NotificationCreateEvent``
     """  # noqa: E501
     channel_id = payload.data.get("channel_id")
     payload.data["message"]["channel_id"] = channel_id

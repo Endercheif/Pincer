@@ -11,15 +11,14 @@ from typing import TYPE_CHECKING
 from ..utils.directory import chdir
 
 if TYPE_CHECKING:
-    from typing import Dict
     from ..utils.types import Coro
 
 
 _log = logging.getLogger(__package__)
 
 
-def get_middleware() -> Dict[str, Coro]:
-    middleware_list: Dict[str, Coro] = {}
+def get_middleware() -> dict[str, Coro]:
+    middleware_list: dict[str, Coro] = {}
 
     with chdir(Path(__file__).parent.resolve()):
 
@@ -48,4 +47,4 @@ def get_middleware() -> Dict[str, Coro]:
     return middleware_list
 
 
-middleware: Dict[str, Coro] = get_middleware()
+middleware: dict[str, Coro] = get_middleware()

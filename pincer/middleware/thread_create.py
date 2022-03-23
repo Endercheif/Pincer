@@ -17,22 +17,19 @@ if TYPE_CHECKING:
 
 async def thread_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, Channel]:
     """|coro|
 
     Middleware for the ``on_thread_create`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the thread create event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.guild.channel.Channel`]
-        ``on_thread_create`` and an ``Channel``
     """
 
     channel: Channel = Channel.from_dict(payload.data)

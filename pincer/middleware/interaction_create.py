@@ -23,7 +23,7 @@ from ..utils import get_index
 from ..utils.signature import get_signature_and_params
 
 if TYPE_CHECKING:
-    from typing import Any, Dict, List, Tuple
+    from typing import Any
     from ..client import Client
     from ..core.gateway import Gateway
     from ..core.gateway import GatewayDispatch
@@ -88,7 +88,9 @@ def get_command_from_registry(interaction: Interaction):
     )
 
 
-def get_call(self: Client, interaction: Interaction) -> Optional[Tuple[Coro, Any]]:
+def get_call(
+    self: Client, interaction: Interaction
+) -> Optional[tuple[Coro, Any]]:
     if interaction.type == InteractionType.APPLICATION_COMMAND:
         command = get_command_from_registry(interaction)
         if command is None:
@@ -111,8 +113,8 @@ async def interaction_response_handler(
     manager: Any,
     context: MessageContext,
     interaction: Interaction,
-    args: List[Any],
-    kwargs: Dict[str, Any],
+    args: list[Any],
+    kwargs: dict[str, Any],
 ):
     """|coro|
 
@@ -157,7 +159,7 @@ async def interaction_handler(
     interaction: Interaction,
     context: MessageContext,
     command: Coro,
-    manager: Any
+    manager: Any,
 ):
     """|coro|
 
@@ -240,15 +242,17 @@ async def interaction_handler(
 
 async def interaction_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-) -> Tuple[str, Interaction]:
+) -> tuple[str, Interaction]:
     """Middleware for ``on_interaction``, which handles command
     execution.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the interaction event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
 
     Raises
@@ -256,11 +260,6 @@ async def interaction_create_middleware(
     e
         Generic try except on ``await interaction_handler`` and
         ``if 0 < len(params) < 3``
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.app.interactions.Interaction`]
-        ``on_interaction_create`` and an ``Interaction``
     """
     interaction: Interaction = Interaction.from_dict(payload.data)
     call, manager = get_call(self, interaction)

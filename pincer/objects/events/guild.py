@@ -12,7 +12,7 @@ from ...utils.api_object import APIObject, GuildProperty
 from ...utils.types import MISSING, APINullable
 
 if TYPE_CHECKING:
-    from typing import Any, List, Optional
+    from typing import Any, Optional
 
     from ..guild.role import Role
     from ..message.emoji import Emoji
@@ -28,10 +28,10 @@ class GuildBanAddEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the guild
-    user: :class:`~pincer.objects.user.user.User`
-        The banned user
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
+    user : :class:`~pincer.objects.user.user.User`
+        The banned user.
     """
 
     guild_id: Snowflake
@@ -44,10 +44,10 @@ class GuildBanRemoveEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the guild
-    user: :class:`~pincer.objects.user.user.User`
-        The unbanned user
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
+    user : :class:`~pincer.objects.user.user.User`
+        The unbanned user.
     """
 
     guild_id: Snowflake
@@ -60,14 +60,14 @@ class GuildEmojisUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the guild
-    emojis: List[:class:`~pincer.objects.message.emoji.Emoji`]
-        Array of emojis
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild
+    emojis : :class:`list`\\[:class:`~pincer.objects.message.emoji.Emoji`]
+        Array of emojis.
     """
 
     guild_id: Snowflake
-    emojis: List[Emoji]
+    emojis: list[Emoji]
 
 
 @dataclass(repr=False)
@@ -76,14 +76,14 @@ class GuildStickersUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the guild
-    stickers: List[:class:`~pincer.objects.message.sticker.Sticker`]
-        Array of stickers
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
+    stickers : :class:`list`\\[:class:`~pincer.objects.message.sticker.Sticker`]
+        Array of stickers.
     """
 
     guild_id: Snowflake
-    stickers: List[Sticker]
+    stickers: list[Sticker]
 
 
 @dataclass(repr=False)
@@ -92,8 +92,8 @@ class GuildIntegrationsUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the guild whose integrations were updated
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild whose integrations were updated.
     """
 
     guild_id: Snowflake
@@ -106,7 +106,7 @@ class GuildMemberAddEvent(GuildMember, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`Snowflake`
+    guild_id : :class:`Snowflake`
         ID of the guild that the user joined.
     """
 
@@ -122,10 +122,10 @@ class GuildMemberRemoveEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        the id of the guild
-    user: :class:`~pincer.objects.user.user.User`
-        the user who was removed
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The ID of the guild.
+    user : :class:`~pincer.objects.user.user.User`
+        The user who was removed.
     """
 
     guild_id: Snowflake
@@ -140,31 +140,31 @@ class GuildMemberUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        the id of the guild
-    roles: List[:class:`~pincer.utils.snowflake.Snowflake`]
-        user role ids
-    user: :class:`~pincer.objects.user.user.User`
-        the user
-    nick: APINullable[Optional[:class:`str`]]
-        nickname of the user in the guild
-    joined_at: Optional[:class:`~pincer.utils.timestamp.Timestamp`]
-        when the user joined the guild
-    premium_since: APINullable[Optional[:class:`~pincer.utils.timestamp.Timestamp`]]
-        when the user started boosting the guild
-    deaf: APINullable[:class:`bool`]
-        whether the user is deafened in voice channels
-    mute: APINullable[:class:`bool`]
-        whether the user is muted in voice channels
-    pending: APINullable[:class:`bool`]
-        whether the user has not yet passed the guild's
-        Membership Screening requirements
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The id of the guild.
+    roles : :class:`list`\\[:class:`~pincer.utils.snowflake.Snowflake`]
+        User role ids.
+    user : :class:`~pincer.objects.user.user.User`
+        The user.
+    nick : APINullable[Optional[:class:`str`]]
+        Nickname of the user in the guild.
+    joined_at : Optional[:class:`~pincer.utils.timestamp.Timestamp`]
+        When the user joined the guild.
+    premium_since : APINullable[Optional[:class:`~pincer.utils.timestamp.Timestamp`]]
+        When the user started boosting the guild.
+    deaf : APINullable[:class:`bool`]
+        Whether the user is deafened in voice channels.
+    mute : APINullable[:class:`bool`]
+        whether the user is muted in voice channels.
+    pending : APINullable[:class:`bool`]
+        Whether the user has not yet passed the guild's
+        Membership Screening requirements.
     """
 
     # noqa: E501
 
     guild_id: Snowflake
-    roles: List[Snowflake]
+    roles: list[Snowflake]
     user: User
     nick: APINullable[Optional[str]] = MISSING
     joined_at: Optional[Timestamp] = None
@@ -182,32 +182,32 @@ class GuildMembersChunkEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The id of the guild
-    members: List[:class:`~pincer.objects.guild.member.GuildMember`]
-        Set of guild members
-    chunk_index: :class:`int`
-        The chunk index in the expected chunks for this response
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The id of the guild.
+    members : list[:class:`~pincer.objects.guild.member.GuildMember`]
+        Set of guild members.
+    chunk_index : :class:`int`
+        The chunk index in the expected chunks for this response.
         (0 <= chunk_index < chunk_count)
-    chunk_count: :class:`int`
-        The total number of expected chunks for this response
-    not_found: APINullable[List[Any]]
+    chunk_count : :class:`int`
+        The total number of expected chunks for this response.
+    not_found : APINullable[:class:`list`\\[Any]]
         If passing an invalid id to ``REQUEST_GUILD_MEMBERS``,
-        it will be returned here
-    presences: APINullable[:class:`~pincer.objects.events.presence.PresenceUpdateEvent`]
+        it will be returned here.
+    presences : APINullable[:class:`~pincer.objects.events.presence.PresenceUpdateEvent`]
         If passing true to ``REQUEST_GUILD_MEMBERS``, presences
-        of the returned members will be here
-    nonce: APINullable[:class:`str`]
-        The nonce used in the Guild Members Request
+        of the returned members will be here.
+    nonce : APINullable[:class:`str`]
+        The nonce used in the Guild Members Request.
     """
 
     # noqa: E501
     guild_id: Snowflake
-    members: List[GuildMember]
+    members: list[GuildMember]
     chunk_index: int
     chunk_count: int
 
-    not_found: APINullable[List[Any]] = MISSING
+    not_found: APINullable[list[Any]] = MISSING
     presences: APINullable[PresenceUpdateEvent] = MISSING
     nonce: APINullable[str] = MISSING
 
@@ -218,10 +218,10 @@ class GuildRoleCreateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The id of the guild
-    role: :class:`~pincer.objects.guild.role.Role`
-        The role created
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The id of the guild.
+    role : :class:`~pincer.objects.guild.role.Role`
+        The role created.
     """
 
     guild_id: Snowflake
@@ -234,10 +234,10 @@ class GuildRoleUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The id of the guild
-    role: :class:`~pincer.objects.guild.role.Role`
-        The role updated
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The id of the guild.
+    role : :class:`~pincer.objects.guild.role.Role`
+        The role updated.
     """
 
     guild_id: Snowflake
@@ -250,10 +250,10 @@ class GuildRoleDeleteEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the guild
-    role_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the role
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
+    role_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the role.
     """
 
     guild_id: Snowflake
@@ -268,10 +268,10 @@ class GuildStatusEvent(APIObject):
     Attributes
     ----------
     guild : :class:`Guild`
-        guild with requested id
+        Guild with requested ID.
 
     online : :class:`int`
-        number of online users in guild (deprecated; always 0)
+        nNmber of online users in guild (deprecated; always 0).
     """
 
     guild: Guild

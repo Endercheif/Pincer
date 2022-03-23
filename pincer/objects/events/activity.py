@@ -14,7 +14,7 @@ class ActivityJoinEvent(APIObject):
     Attributes
     ----------
     secret : :class:`str`
-        the join_secret for the given invite
+        The ``join_secret`` for the given invite.
     """
 
     secret: str
@@ -27,8 +27,8 @@ class ActivitySpectateEvent(APIObject):
 
     Attributes
     ----------
-    secret: :class:`str`
-        the spectate_secret for the given invite
+    secret : :class:`str`
+        The ``spectate_secret`` for the given invite.
     """
 
     secret: str

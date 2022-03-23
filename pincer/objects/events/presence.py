@@ -4,14 +4,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import IntEnum
+from enum import IntEnum, Enum, auto
 from typing import TYPE_CHECKING
 
 from ...utils.api_object import APIObject, GuildProperty
 from ...utils.types import MISSING, APINullable
 
 if TYPE_CHECKING:
-    from typing import List, Optional, Tuple
+    from typing import Optional
     from ..user.user import User
     from ...utils.snowflake import Snowflake
 
@@ -21,19 +21,20 @@ class ActivityType(IntEnum):
 
     Attributes
     ----------
-    GAME:
-        Playing {name}; e.g. "Playing Rocket League"
-    STREAMING:
+    GAME :
+        Playing {name}; e.g. "Playing Rocket League".
+    STREAMING :
         Streaming {details}; e.g. "Streaming Rocket League"; Only supports Twitch and YouTube.
-    LISTENING:
-        Listening to {name}; e.g. "Listening to Spotify"
-    WATCHING:
-        Watching {name}; e.g. "Watching YouTube Together"
-    CUSTOM:
-        \\{emoji} {name}; e.g. "\\:smiley: I am cool"; Not for bots; discord limitation
-    COMPETING:
+    LISTENING :
+        Listening to {name}; e.g. "Listening to Spotify".
+    WATCHING :
+        Watching {name}; e.g. "Watching YouTube Together".
+    CUSTOM :
+        \\{emoji} {name}; e.g. "\\:smiley: I am cool"; Not for bots; discord limitation.
+    COMPETING :
         Competing in {name}; e.g. "Competing in Arena World Champions"
     """  # noqa: E501
+
     GAME = 0
     STREAMING = 1
     LISTENING = 2
@@ -48,11 +49,12 @@ class ActivityTimestamp(APIObject):
 
     Attributes
     ----------
-    start: APINullable[:class:`int`]
-        Unix time (in milliseconds) of when the activity started
-    end: APINullable[:class:`int`]
-        Unix time (in milliseconds) of when the activity ends
+    start : APINullable[:class:`int`]
+        Unix time (in milliseconds) of when the activity started.
+    end : APINullable[:class:`int`]
+        Unix time (in milliseconds) of when the activity ends.
     """
+
     start: APINullable[int] = MISSING
     end: APINullable[int] = MISSING
 
@@ -63,13 +65,14 @@ class ActivityEmoji(APIObject):
 
     Attributes
     ----------
-    name: :class:`str`
-        The name of the emoji
-    id: APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
-        The id of the emoji
-    animated: APINullable[:class:`bool`]
-        Whether this emoji is animated
+    name : :class:`str`
+        The name of the emoji.
+    id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        The ID of the emoji.
+    animated : APINullable[:class:`bool`]
+        Whether this emoji is animated.
     """
+
     name: str
     id: APINullable[Snowflake] = MISSING
     animated: APINullable[bool] = MISSING
@@ -81,13 +84,14 @@ class ActivityParty(APIObject):
 
     Attributes
     ----------
-    id: APINullable[:class:`str`]
-        The id of the party
-    size: APINullable[Tuple[:class:`int`, :class:`int`]]
-        Array of two integers (current_size, max_size)
+    id : APINullable[:class:`str`]
+        The ID of the party.
+    size : APINullable[:class:`tuple`\\[:class:`int`, :class:`int`]]
+        Array of two integers (current_size, max_size).
     """
+
     id: APINullable[str] = MISSING
-    size: APINullable[Tuple[int, int]] = MISSING
+    size: APINullable[tuple[int, int]] = MISSING
 
 
 @dataclass(repr=False)
@@ -96,17 +100,18 @@ class ActivityAssets(APIObject):
 
     Attributes
     ----------
-    large_image: APINullable[:class:`str`]
-        the id for a large asset of the activity, usually a snowflake
-    large_text: APINullable[:class:`str`]
-        text displayed when hovering over
-        the large image of the activity
-    small_image: APINullable[:class:`str`]
-        the id for a small asset of the activity, usually a snowflake
-    small_text: APINullable[:class:`str`]
-        text displayed when hovering over
-        the small image of the activity
+    large_image : APINullable[:class:`str`]
+        The id for a large asset of the activity, usually a snowflake.
+    large_text : APINullable[:class:`str`]
+        Text displayed when hovering over
+        the large image of the activity.
+    small_image : APINullable[:class:`str`]
+        The id for a small asset of the activity, usually a snowflake.
+    small_text : APINullable[:class:`str`]
+        Text displayed when hovering over
+        the small image of the activity.
     """
+
     large_image: APINullable[str] = MISSING
     large_text: APINullable[str] = MISSING
     small_image: APINullable[str] = MISSING
@@ -119,13 +124,14 @@ class ActivitySecrets(APIObject):
 
     Attributes
     ----------
-    join: APINullable[:class:`str`]
-        The secret for joining a party
-    spectate: APINullable[:class:`str`]
-        The secret for spectating a game
-    match: APINullable[:class:`str`]
-        The secret for a specific instanced match
+    join : APINullable[:class:`str`]
+        The secret for joining a party.
+    spectate : APINullable[:class:`str`]
+        The secret for spectating a game.
+    match : APINullable[:class:`str`]
+        The secret for a specific instanced match.
     """
+
     join: APINullable[str] = MISSING
     spectate: APINullable[str] = MISSING
     match_: APINullable[str] = MISSING
@@ -158,11 +164,12 @@ class ActivityButton(APIObject):
 
     Attributes
     ----------
-    label: :class:`str`
-        The text shown on the button (1-32 characters)
-    url: :class:`str`
-        The url opened when clicking the button (1-512 characters)
+    label : :class:`str`
+        The text shown on the button (1-32 characters).
+    url : :class:`str`
+        The url opened when clicking the button (1-512 characters).
     """
+
     label: str
     url: str
 
@@ -173,39 +180,40 @@ class Activity(APIObject):
 
     Attributes
     ----------
-    name: :class:`str`
-        The activity's name
-    type: :class:`~pincer.objects.events.presence.ActivityType`
-        Activity type
-    created_at: :class:`int`
+    name : :class:`str`
+        The activity's name.
+    type : :class:`~pincer.objects.events.presence.ActivityType`
+        Activity type.
+    created_at : :class:`int`
         Unix timestamp (in milliseconds) of when
-        the activity was added to the user's session
-    url: APINullable[Optional[:class:`str`]]
-        Stream url, is validated when type is 1
-    timestamps: APINullable[:class:`~pincer.objects.events.presence.ActivityTimestamp`]
-        Unix timestamps for start and/or end of the game
-    application_id: APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
-        Application id for the game
-    details: APINullable[Optional[:class:`str`]]
-        What the player is currently doing
-    state: APINullable[Optional[:class:`str`]]
-        The user's current party status
-    emoji: APINullable[Optional[:class:`~pincer.objects.events.presence.ActivityEmoji`]]
-        The emoji used for a custom status
-    party: APINullable[:class:`~pincer.objects.events.presence.ActivityParty`]
-        Information for the current party of the player
-    assets: APINullable[:class:`~pincer.objects.events.presence.ActivityAssets`]
-        Images for the presence and their hover texts
-    secrets: APINullable[:class:`~pincer.objects.events.presence.ActivitySecrets`]
-        Secrets for Rich Presence joining and spectating
-    instance: APINullable[:class:`bool`]
-        whether or not the activity is an instanced game session
-    flags: APINullable[:class:`~pincer.objects.events.presence.ActivityFlags`]
+        the activity was added to the user's session.
+    url : APINullable[Optional[:class:`str`]]
+        Stream url, is validated when type is 1.
+    timestamps : APINullable[:class:`~pincer.objects.events.presence.ActivityTimestamp`]
+        Unix timestamps for start and/or end of the game.
+    application_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        Application id for the game.
+    details : APINullable[Optional[:class:`str`]]
+        What the player is currently doing.
+    state : APINullable[Optional[:class:`str`]]
+        The user's current party status.
+    emoji : APINullable[Optional[:class:`~pincer.objects.events.presence.ActivityEmoji`]]
+        The emoji used for a custom status.
+    party : APINullable[:class:`~pincer.objects.events.presence.ActivityParty`]
+        Information for the current party of the player.
+    assets : APINullable[:class:`~pincer.objects.events.presence.ActivityAssets`]
+        Images for the presence and their hover texts.
+    secrets : APINullable[:class:`~pincer.objects.events.presence.ActivitySecrets`]
+        Secrets for Rich Presence joining and spectating.
+    instance : APINullable[:class:`bool`]
+        whether or not the activity is an instanced game session.
+    flags : APINullable[:class:`~pincer.objects.events.presence.ActivityFlags`]
         Activity flags ``OR``\\d together,
-        describes what the payload includes
-    buttons: APINullable[List[:class:`~pincer.objects.events.presence.ActivityButton`]]
+        describes what the payload includes.
+    buttons : APINullable[list[:class:`~pincer.objects.events.presence.ActivityButton`]]
         The url button on an activity.
     """
+
     # noqa: E501
     name: str
     type: ActivityType
@@ -222,7 +230,7 @@ class Activity(APIObject):
     secrets: APINullable[ActivitySecrets] = MISSING
     instance: APINullable[bool] = MISSING
     flags: APINullable[ActivityFlags] = MISSING
-    buttons: APINullable[List[ActivityButton]] = MISSING
+    buttons: APINullable[list[ActivityButton]] = MISSING
 
 
 @dataclass(repr=False)
@@ -234,16 +242,17 @@ class ClientStatus(APIObject):
 
     Attributes
     ----------
-    desktop: APINullable[:class:`str`]
+    desktop : APINullable[:class:`str`]
         The user's status set for an active desktop
-        (Windows, Linux, Mac) application session
-    mobile: APINullable[:class:`str`]
+        (Windows, Linux, Mac) application session.
+    mobile : APINullable[:class:`str`]
         The user's status set for an active mobile
-        (iOS, Android) application session
-    web: APINullable[:class:`str`]
+        (iOS, Android) application session.
+    web : APINullable[:class:`str`]
         The user's status set for an active web
-        (browser, bot account) application session
+        (browser, bot account) application session.
     """
+
     desktop: APINullable[str] = MISSING
     mobile: APINullable[str] = MISSING
     web: APINullable[str] = MISSING
@@ -256,19 +265,20 @@ class PresenceUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    user: :class:`~pincer.objects.user.user.User`
-        The user presence is being updated for
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the guild
-    status: :class:`str`
-        Either "idle", "dnd", "online", or "offline"
-    activities: List[:class:`~pincer.objects.events.presence.Activity`]
-        User's current activities'
-    client_status: :class:`~pincer.objects.events.presence.ClientStatus`
-        User's platform-dependent status
+    user : :class:`~pincer.objects.user.user.User`
+        The user presence is being updated for.
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
+    status : :class:`str`
+        Either ``idle``, ``dnd``, ``online``, or ``offline``
+    activities : list[:class:`~pincer.objects.events.presence.Activity`]
+        User's current activities'.
+    client_status : :class:`~pincer.objects.events.presence.ClientStatus`
+        User's platform-dependent status.
     """
+
     user: User
     status: str
-    activities: List[Activity]
+    activities: list[Activity]
     client_status: ClientStatus
     guild_id: APINullable[Snowflake] = MISSING

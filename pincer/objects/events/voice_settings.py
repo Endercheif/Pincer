@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum, IntEnum, auto
-from typing import List
 
 from ...utils.api_object import APIObject
 
@@ -13,15 +12,15 @@ from ...utils.api_object import APIObject
 @dataclass(repr=False)
 class AvailableDevices(APIObject):
     """
-    Represents an available device for voice settings
+    Represents an available device for voice settings.
 
     Attributes
     ----------
     id : :class:`str`
-        id of the available device
+        ID of the available device.
 
     name : :class:`str`
-        name of the available device
+        Name of the available device.
     """
 
     id: str
@@ -31,49 +30,49 @@ class AvailableDevices(APIObject):
 @dataclass(repr=False)
 class VoiceSettingsInput(APIObject):
     """
-    Represents a voice setting input object
+    Represents a voice setting input object.
 
     Attributes
     ----------
     device_id : :class:`str`
-        the device's id
+        The device's ID.
 
     volume : :class:`float`
-        input voice level (min: 0, max: 100)
+        Input voice level (min: 0, max: 100).
 
-    available_devices : List[:class:`AvailableDevices`]
-        array of read-only device objects containing id and name string keys
+    available_devices : :class:`list`\\[:class:`AvailableDevices`]
+        Array of read-only device objects containing id and name string keys.
     """
 
     device_id: str
     volume: float
-    available_devices: List[AvailableDevices]
+    available_devices: list[AvailableDevices]
 
 
 @dataclass(repr=False)
 class VoiceSettingsOutput(APIObject):
     """
-    Represents a voice setting output object
+    Represents a voice setting output object.
 
     Attributes
     ----------
     device_id : :class:`str`
-        the device's id
+        The device's ID.
 
     volume : :class:`float`
-        input voice level (min: 0, max: 100)
+        Input voice level (min: 0, max: 100).
 
-    available_devices : List[:class:`AvailableDevices`]
-        array of read-only device objects containing id and name string keys
+    available_devices : :class:`list`\\[:class:`AvailableDevices`]
+        Array of read-only device objects containing id and name string keys.
     """
 
     device_id: str
     volume: float
-    available_devices: List[AvailableDevices]
+    available_devices: list[AvailableDevices]
 
 
 class VoiceSettingsModeType(Enum):
-    """Represents a voice settings mode type"""
+    """Represents a voice settings mode type."""
 
     PUSH_TO_TALK = auto()
     VOICE_ACTIVITY = auto()
@@ -91,18 +90,18 @@ class KeyTypes(IntEnum):
 @dataclass(repr=False)
 class ShortcutKeyCombo(APIObject):
     """
-    Represents a shortcut key combo for the voice mode settings from a user
+    Represents a shortcut key combo for the voice mode settings from a user.
 
     Attributes
     ----------
     type : :class:`KeyTypes`
-        type of shortcut key combo
+        Type of shortcut key combo.
 
     code : :class:`str`
-        key code
+        Key code.
 
     name : :class:`str`
-        key name
+        Key name.
     """
 
     type: KeyTypes
@@ -113,24 +112,24 @@ class ShortcutKeyCombo(APIObject):
 @dataclass(repr=False)
 class VoiceSettingsMode(APIObject):
     """
-    Represents the voice mode settings from a user
+    Represents the voice mode settings from a user.
 
     Attributes
     ----------
     type : :class:`VoiceSettingsModeType`
-        voice setting mode type
+        Voice setting mode type.
 
     auto_threshold : :class:`bool`
-        voice activity threshold automatically sets its threshold
+        Voice activity threshold automatically sets its threshold.
 
     threshold : :class:`float`
-        threshold for voice activity (in dB)
+        Threshold for voice activity (in dB).
 
     shortcut : :class:`ShortcutKeyCombo`
-        shortcut key combos for PTT
+        Shortcut key combos for PTT.
 
     delay : :class:`float`
-        the PTT release delay (in ms) (min: 0, max: 2000)
+        The PTT release delay (in ms) (min: 0, max: 2000).
     """
 
     type: VoiceSettingsModeType
@@ -143,39 +142,39 @@ class VoiceSettingsMode(APIObject):
 @dataclass(repr=False)
 class VoiceSettingsUpdateEvent(APIObject):
     """
-    Represents a user's voice settings
+    Represents a user's voice settings.
 
     Attributes
     ----------
     input : :class:`VoiceSettingsInput`
-        input settings
+        Input settings.
 
     output : :class:`VoiceSettingsOutput`
-        output settings
+        Output settings.
 
     mode : :class:`bool`
-        voice mode settings
+        Voice mode settings.
 
     automatic_gain_control : :class:`bool`
-        state of automatic gain control
+        State of automatic gain control.
 
     echo_cancellation : :class:`bool`
-        state of echo cancellation
+        State of echo cancellation.
 
     noise_suppression : :class:`bool`
-        state of noise suppression
+        State of noise suppression.
 
     qos : :class:`bool`
-        state of voice quality of service
+        State of voice quality of service.
 
     silence_warning : :class:`bool`
-        state of silence warning notice
+        State of silence warning notice.
 
     deaf : :class:`bool`
-        state of self-deafen
+        State of self-deafen.
 
     mute : :class:`bool`
-        state of self-mute
+        State of self-mute.
     """
 
     input: VoiceSettingsInput

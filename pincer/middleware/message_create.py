@@ -9,8 +9,6 @@ from typing import TYPE_CHECKING
 from ..objects.message.user_message import UserMessage
 
 if TYPE_CHECKING:
-    from typing import Tuple
-
     from ..client import Client
     from ..core.gateway import Gateway
     from ..core.gateway import GatewayDispatch
@@ -18,22 +16,19 @@ if TYPE_CHECKING:
 
 async def message_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-) -> Tuple[str, UserMessage]:  # noqa: E501
+) -> tuple[str, UserMessage]:
     """|coro|
 
     Middleware for the ``on_message`` event.
 
     Parameters
     ----------
-    payload : :class:`pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the message creation event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.message.user_message.UserMessage`]
-        ``on_message`` and a ``UserMessage``
     """  # noqa: E501
     return ("on_message", UserMessage.from_dict(payload.data))
 

@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def guild_status_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, GuildStatusEvent]:
     """|coro|
 
     Middleware for the ``on_guild_status`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the guild status event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Return
-    ------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.guild.GuildStatusEvent`]
-        ``on_guild_status`` and a ``GuildStatusEvent``
     """
     return ("on_guild_status", GuildStatusEvent.from_dict(payload.data))
 

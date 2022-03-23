@@ -20,10 +20,11 @@ class WebhooksUpdateEvent(APIObject, ChannelProperty):
 
     Attributes
     ----------
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        id of the guild
-    channel_id: :class:`~pincer.utils.snowflake.Snowflake`
-        id of the channel
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
+    channel_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the channel.
     """
+
     guild_id: Snowflake
     channel_id: Snowflake

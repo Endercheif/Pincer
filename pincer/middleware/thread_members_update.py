@@ -17,22 +17,19 @@ if TYPE_CHECKING:
 
 async def thread_members_update_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, ThreadMembersUpdateEvent]:
     """|coro|
 
     Middleware for the ``on_thread_members_update`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the thread members update event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.thread.ThreadMembersUpdateEvent`]
-        ``on_thread_members_update`` and an ``ThreadMembersUpdateEvent``
     """  # noqa: E501
     return (
         "on_thread_members_update",

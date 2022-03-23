@@ -13,7 +13,6 @@ from ..objects.events.error import DiscordError
 from ..utils.types import Coro
 
 if TYPE_CHECKING:
-    from typing import Tuple
     from ..client import Client
     from ..core.gateway import Gateway
     from ..core.gateway import GatewayDispatch
@@ -21,26 +20,23 @@ if TYPE_CHECKING:
 
 def error_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-) -> Tuple[str, DiscordError]:
+) -> tuple[str, DiscordError]:
     """|coro|
 
     Middleware for the ``on_error`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the ready event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.error.DiscordError`]
-        ``on_error`` and a ``DiscordError``
     """
     # noqa: E501
 
-    return ("on_error", DiscordError.from_dict(payload.data))
+    return "on_error", DiscordError.from_dict(payload.data)
 
 
 def export() -> Coro:

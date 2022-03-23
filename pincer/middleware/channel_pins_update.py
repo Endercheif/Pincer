@@ -16,25 +16,20 @@ if TYPE_CHECKING:
 
 
 async def channel_pins_update_middleware(
-    self: Client,
-    gateway: Gateway,
-    payload: GatewayDispatch
-):
+    self: Client, gateway: Gateway, payload: GatewayDispatch
+) -> tuple[str, ChannelPinsUpdateEvent]:
     """|coro|
 
     Middleware for the ``on_channel_pins_update`` event.
 
     Parameters
     ----------
-    payload : :class:`pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the channel pins update event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.guild.channel.Channel`]
-        ``on_channel_pins_update`` and a ``Channel``
     """
 
     event = ChannelPinsUpdateEvent.from_dict(payload.data)
@@ -42,7 +37,7 @@ async def channel_pins_update_middleware(
         event.channel_id
     ].last_pin_timestamp = event.last_pin_timestamp
 
-    return ("on_channel_pins_update", event)
+    return "on_channel_pins_update", event
 
 
 def export():

@@ -17,22 +17,19 @@ if TYPE_CHECKING:
 
 async def channel_delete_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, Channel]:
     """|coro|
 
     Middleware for the ``on_channel_delete`` event.
 
     Parameters
     ----------
-    payload : :class:`pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the channel delete event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.guild.channel.Channel`]
-        ``on_channel_delete`` and a ``Channel``
     """
 
     channel = Channel.from_dict(payload.data)

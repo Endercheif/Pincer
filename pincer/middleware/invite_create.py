@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def invite_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, InviteCreateEvent]:
     """|coro|
 
     Middleware for the ``on_invite_create`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the invite create event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.invite.InviteCreateEvent`]
-        ``on_invite_create`` and an ``InviteCreateEvent``
     """  # noqa: E501
     return ("on_invite_create", InviteCreateEvent.from_dict(payload.data))
 

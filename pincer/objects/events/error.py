@@ -13,10 +13,11 @@ class DiscordError(PincerError, APIObject):
 
     Attributes
     ----------
-    code: :class:`int`
+    code : :class:`int`
         The RPC error code.
-    message: :class:`str`
+    message : :class:`str`
         The error description.
     """
+
     code: int
     message: str

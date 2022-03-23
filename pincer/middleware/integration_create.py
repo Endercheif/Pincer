@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def integration_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, IntegrationCreateEvent]:
     """|coro|
 
     Middleware for the ``on_integration_create`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the integration create event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.events.integration.IntegrationCreateEvent`]
-        ``on_integration_create`` and an ``IntegrationCreateEvent``
     """  # noqa: E501
     return (
         "on_integration_create",

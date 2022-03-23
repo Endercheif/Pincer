@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 from ..objects.guild import Guild
 
 if TYPE_CHECKING:
-    from typing import Tuple
     from ..client import Client
     from ..core.gateway import Gateway
     from ..core.gateway import GatewayDispatch
@@ -17,24 +16,20 @@ if TYPE_CHECKING:
 
 async def guild_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, Guild]:
     """|coro|
 
     Middleware for the ``on_guild_create``,
-        generate the guild class that was created
+    generate the guild class that was created
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the guild create event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.guild.guild.Guild`]
-
-        ``on_guild_create`` and a ``Guild``
     """
     guild = Guild.from_dict(payload.data)
     self.guilds[guild.id] = guild

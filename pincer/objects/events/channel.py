@@ -21,13 +21,14 @@ class ChannelPinsUpdateEvent(APIObject, ChannelProperty, GuildProperty):
 
     Attributes
     ----------
-    channel_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The id of the channel
-    guild_id: APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
-        The id of the guild
-    last_pin_timestamp: APINullable[:class:`~pincer.utils.timestamp.Timestamp`]
-        The time at which the most recent pinned message was pinned
+    channel_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The id of the channel.
+    guild_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        The id of the guild.
+    last_pin_timestamp : APINullable[:class:`~pincer.utils.timestamp.Timestamp`]
+        The time at which the most recent pinned message was pinned.
     """
+
     channel_id: Snowflake
 
     guild_id: APINullable[Snowflake] = MISSING

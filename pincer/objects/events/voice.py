@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 from ...utils.api_object import APIObject, GuildProperty
 
 if TYPE_CHECKING:
-    from typing import Optional, List
+    from typing import Optional
 
     from ...utils.snowflake import Snowflake
 
@@ -23,12 +23,12 @@ class VoiceServerUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    token: :class:`str`
-        Voice connection token
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The guild this voice server update is for
-    endpoint: Optional[:class:`str`]
-        The voice server host
+    token : :class:`str`
+        Voice connection token.
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The guild this voice server update is for.
+    endpoint : Optional[:class:`str`]
+        The voice server host.
     """
 
     token: str
@@ -43,11 +43,11 @@ class VoiceChannelSelectEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    channel_id : Optional[:class:`Snowflake`]
-        id of channel
+    channel_id : Optional[:class:`~pincer.utils.snowflake.Snowflake`]
+        ID of channel.
 
-    guild_id : Optional[:class:`Snowflake`]
-        id of guild
+    guild_id : Optional[:class:`~pincer.utils.snowflake.Snowflake`]
+        ID of guild.
     """
 
     channel_id: Optional[Snowflake] = None
@@ -59,34 +59,34 @@ class VoiceConnectionStates(Enum):
     Attributes
     ----------
     DISCONNECTED : :class:`str`
-        TCP disconnected
+        TCP disconnected.
 
     AWAITING_ENDPOINT : :class:`str`
-        Waiting for voice endpoint
+        Waiting for voice endpoint.
 
     AUTHENTICATING : :class:`str`
-        TCP authenticating
+        TCP authenticating.
 
     CONNECTING : :class:`str`
         TCP connecting
 
     CONNECTED : :class:`str`
-        TCP connected
+        TCP connected.
 
     VOICE_DISCONNECTED : :class:`str`
-        TCP connected, Voice disconnected
+        TCP connected, Voice disconnected.
 
     VOICE_CONNECTING : :class:`str`
-        TCP connected, Voice connecting
+        TCP connected, Voice connecting.
 
     VOICE_CONNECTED : :class:`str`
-        TCP connected, Voice connected
+        TCP connected, Voice connected.
 
     NO_ROUTE : :class:`str`
-        No route to host
+        No route to host.
 
     ICE_CHECKING : :class:`str`
-        WebRTC ice checking
+        WebRTC ice checking.
 
     """
 
@@ -107,26 +107,28 @@ class VoiceConnectionStatusEvent(APIObject):
     """
     Sent when the client's voice connection status changes
 
+    Attributes
+    ----------
     state : :class:`VoiceConnectionStates`
-        one of the voice connection states listed below
+        One of the voice connection states listed below.
 
     hostname : :class:`str`
-        hostname of the connected voice server
+        Hostname of the connected voice server.
 
-    pings : List[:class:`int`]
-        last 20 pings (in ms)
+    pings : :class:`list`\\[:class:`int`]
+        Last 20 pings (in ms).
 
     average_ping : :class:`int`
-        average ping (in ms)
+        Average ping (in ms).
 
     last_ping : :class:`int`
-        last ping (in ms)
+        Last ping (in ms).
 
     """
 
     state: VoiceConnectionStates
     hostname: str
-    pings: List[int]
+    pings: list[int]
     average_ping: int
     last_ping: int
 
@@ -138,8 +140,8 @@ class SpeakingStartEvent(APIObject):
 
     Attributes
     ----------
-    user_id : :class:`Snowflake`
-        id of user who started speaking
+    user_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of user who started speaking.
     """
 
     user_id: Snowflake
@@ -152,8 +154,8 @@ class SpeakingStopEvent(APIObject):
 
     Attributes
     ----------
-    user_id : :class:`Snowflake`
-        id of user who stopped speaking
+    user_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of user who stopped speaking.
     """
 
     user_id: Snowflake

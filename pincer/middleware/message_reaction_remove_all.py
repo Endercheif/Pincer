@@ -17,22 +17,19 @@ if TYPE_CHECKING:
 
 async def message_reaction_remove_all_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, MessageReactionRemoveAllEvent]:
     """|coro|
 
     Middleware for the ``on_message_reaction_remove_all`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the message reaction remove all event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.message.MessageReactionRemoveAllEvent`]
-        ``on_message_reaction_remove_all`` and an ``MessageReactionRemoveAllEvent``
     """  # noqa: E501
 
     return (

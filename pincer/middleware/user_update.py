@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def user_update_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, User]:
     """|coro|
 
     Middleware for the ``on_user_update`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the user update event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.user.user.User`]
-        ``on_user_update`` and a ``User``
     """
     return ("on_user_update", User.from_dict(payload.data))
 

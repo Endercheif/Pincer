@@ -22,31 +22,32 @@ class InviteCreateEvent(APIObject, ChannelProperty, GuildProperty):
 
     Attributes
     ----------
-    channel_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The channel the invite is for
-    code: :class:`str`
-        The unique invite code
-    created_at: :class:`~pincer.utils.timestamp.Timestamp`
-        The time at which the invite was created
-    max_age: :class:`int`
-        How long the invite is valid for (in seconds)
-    max_uses: :class:`int`
-        The maximum number of times the invite can be used
-    temporary: :class:`bool`
+    channel_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The channel the invite is for.
+    code : :class:`str`
+        The unique invite code.
+    created_at : :class:`~pincer.utils.timestamp.Timestamp`
+        The time at which the invite was created.
+    max_age : :class:`int`
+        How long the invite is valid for (in seconds).
+    max_uses : :class:`int`
+        The maximum number of times the invite can be used.
+    temporary : :class:`bool`
         Whether the invite is temporary (invited users will
-        be kicked on disconnect unless they're assigned a role)
-    guild_id: APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
-        The guild of the invite
-    inviter: APIObject[:class:`~pincer.objects.user.user.User`]
-        The user that created the invite
-    target_type: APINullable[:class:`~pincer.objects.guild.invite.InviteTargetType`]
-        The type of target for this voice channel invite
-    target_user: APINullable[:class:`~pincer.objects.user.user.User`]
+        be kicked on disconnect unless they're assigned a role).
+    guild_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        The guild of the invite.
+    inviter : APIObject[:class:`~pincer.objects.user.user.User`]
+        The user that created the invite.
+    target_type : APINullable[:class:`~pincer.objects.guild.invite.InviteTargetType`]
+        The type of target for this voice channel invite.
+    target_user : APINullable[:class:`~pincer.objects.user.user.User`]
         The user whose stream to display for
-        this voice channel stream invite
-    uses: :class:`int`
-        How many times the invite has been used (always will be ``0``)
+        this voice channel stream invite.
+    uses : :class:`int`
+        How many times the invite has been used (always will be ``0``).
     """
+
     # noqa: E501
     channel_id: Snowflake
     code: str
@@ -68,13 +69,14 @@ class InviteDeleteEvent(APIObject, ChannelProperty, GuildProperty):
 
     Attributes
     ----------
-    channel_id: :class:`~pincer.utils.snowflake.Snowflake`
-        The channel of the invite
-    code: :class:`str`
-        The unique invite code
-    guild_id: APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
-        The guild of the invite
+    channel_id : :class:`~pincer.utils.snowflake.Snowflake`
+        The channel of the invite.
+    code : :class:`str`
+        The unique invite code.
+    guild_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        The guild of the invite.
     """
+
     channel_id: Snowflake
     code: str
 

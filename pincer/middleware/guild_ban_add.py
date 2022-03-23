@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def guild_ban_add_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, GuildBanAddEvent]:
     """|coro|
 
     Middleware for the ``on_guild_ban_add`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the guild ban add event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.guild.GuildBaAddEvent`]
-        ``on_guild_ban_add_update`` and a ``GuildBanAddEvent``
     """
 
     return ("on_guild_ban_add", GuildBanAddEvent.from_dict(payload.data))

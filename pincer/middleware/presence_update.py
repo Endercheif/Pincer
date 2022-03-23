@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def presence_update_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, PresenceUpdateEvent]:
     """|coro|
 
     Middleware for the ``on_presence_update`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the presence update event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.user.voice_state.PresenceUpdateEvent`]
-        ``on_presence_update`` and a ``PresenceUpdateEvent``
     """  # noqa: E501
     return ("on_presence_update", PresenceUpdateEvent.from_dict(payload.data))
 

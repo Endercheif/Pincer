@@ -12,8 +12,6 @@ from typing import TYPE_CHECKING
 from ..objects.user.voice_state import VoiceState
 
 if TYPE_CHECKING:
-    from typing import List, Tuple
-
     from ..client import Client
     from ..core.gateway import Gateway
     from ..core.gateway import GatewayDispatch
@@ -21,21 +19,18 @@ if TYPE_CHECKING:
 
 async def voice_state_update_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-) -> Tuple[str, List[VoiceState]]:
+) -> tuple[str, VoiceState]:
     """|coro|
     Middleware for the ``on_voice_state_update`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the voice state update event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.user.voice_state.VoiceState`]
-        ``on_voice_state_update`` and a ``VoiceState``
     """  # noqa: E501
 
     voice_state = VoiceState.from_dict(payload.data)

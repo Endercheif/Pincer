@@ -16,20 +16,20 @@ class NotificationCreateEvent(APIObject, ChannelProperty):
 
     Attributes
     ----------
-    channel_id : :class:`Snowflake`
-        id of channel where notification occurred
+    channel_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of channel where notification occurred.
 
     message : :class:`UserMessage`
-        message that generated this notification
+        Message that generated this notification.
 
     icon_url : :class:`str`
-        icon url of the notification
+        Icon url of the notification.
 
     title : :class:`str`
-        title of the notification
+        Title of the notification.
 
     body : :class:`str`
-        body of the notification
+        Body of the notification.
     """
 
     channel_id: Snowflake

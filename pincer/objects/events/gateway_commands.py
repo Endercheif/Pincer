@@ -11,7 +11,7 @@ from ...utils.api_object import APIObject, GuildProperty
 from ...utils.types import APINullable, MISSING
 
 if TYPE_CHECKING:
-    from typing import Any, Dict, List, Optional, Tuple, Union
+    from typing import Any, Optional
 
     from .presence import Activity
     from ..app.intents import Intents
@@ -24,30 +24,31 @@ class Identify(APIObject):
 
     Attributes
     ----------
-    token: :class:`str`
-        Authentication token
-    properties: Dict[:class:`str`, :class:`str`]
-        Connection properties
-    intents: :class:`~pincer.objects.app.intents.Intents`
-        The Gateway Intents you wish to receive
-    compress: APINullable[:class:`bool`]
-        Whether this connection supports compression of packets
-    large_threshold: APINullable[:class:`int`]
+    token : :class:`str`
+        Authentication token.
+    properties : :class:`dict`\\[:class:`str`, :class:`str`]
+        Connection properties.
+    intents : :class:`~pincer.objects.app.intents.Intents`
+        The Gateway Intents you wish to receive.
+    compress : APINullable[:class:`bool`]
+        Whether this connection supports compression of packets.
+    large_threshold : APINullable[:class:`int`]
         Value between 50 and 250, total number
         of members where the gateway will stop sending offline
-        members in the guild member list
-    shard: APINullable[Tuple[:class:`int`, :class:`int`]]
-        Used for Guild Sharding
-    presence: APINullable[Any]
-        Presence structure for initial presence information
+        members in the guild member list.
+    shard : APINullable[:class:`tuple`\\[:class:`int`, :class:`int`]]
+        Used for Guild Sharding.
+    presence : APINullable[Any]
+        Presence structure for initial presence information.
     """
+
     token: str
-    properties: Dict[str, str]
+    properties: dict[str, str]
     intents: Intents
 
     compress: APINullable[bool] = MISSING
     large_threshold: APINullable[int] = MISSING
-    shard: APINullable[Tuple[int, int]] = MISSING
+    shard: APINullable[tuple[int, int]] = MISSING
     presence: APINullable[Any] = MISSING  # FIXME
 
 
@@ -57,13 +58,14 @@ class Resume(APIObject):
 
     Attributes
     ----------
-    token: :class:`str`
-        Session token
-    session_id: :class:`str`
-        Session id
-    seq: :class:`int`
-        Last sequence number received
+    token : :class:`str`
+        Session token.
+    session_id : :class:`str`
+        Session id.
+    seq : :class:`int`
+        Last sequence number received.
     """
+
     token: str
     session_id: str
     seq: int
@@ -73,33 +75,36 @@ class Resume(APIObject):
 class RequestGuildMembers(APIObject, GuildProperty):
     """Used to request all members for a guild or a list of guilds.
 
-    guild_id:
-        id of the guild to get members for
+    Attributes
+    ----------
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild to get members for.
 
-    query:
-        string that username starts with, or an empty string
-        to return all members
+    query : APINullable[:class:`str`]
+        String that username starts with, or an empty string
+        to return all members.
 
-    limit:
-        maximum number of members to send matching the `query`;
-        a limit of `0` can be used with an empty string `query`
-        to return all members
+    limit : int
+        Maximum number of members to send matching the ``query``;
+        a limit of ``0`` can be used with an empty string ``query``
+        to return all members.
 
-    presences:
-        used to specify if we want the presences of the matches members
+    presences : APINullable[:class:`bool`]
+        Used to specify if we want the presences of the matches members.
 
-    user_ids:
-        used to specify which users you wish to fetch
+    user_ids : APINullable[:class:`~pincer.utils.snowflake.Snowflake` | :class:`list`\\[:class:`~pincer.utils.snowflake.Snowflake`]]
+        Used to specify which users you wish to fetch.
 
-    nonce:
-        nonce to identify the Guild Members Chunk response
+    nonce : APINullable[:class:`str`]
+        Nonce to identify the Guild Members Chunk response.
     """
+
     guild_id: Snowflake
     limit: int
 
     query: APINullable[str] = MISSING
     presences: APINullable[bool] = MISSING
-    user_ids: APINullable[Union[Snowflake, List[Snowflake]]] = MISSING
+    user_ids: APINullable[Snowflake | list[Snowflake]] = MISSING
     nonce: APINullable[str] = MISSING
 
 
@@ -108,19 +113,22 @@ class UpdateVoiceState(APIObject, GuildProperty):
     """Sent when a client wants to join, move,
     or disconnect from a voice channel.
 
-    guild_id:
-        id of the guild
+    Attributes
+    ----------
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
 
-    channel_id:
-        id of the voice channel client
-        wants to join (null if disconnecting)
+    channel_id : Optional[:class:`~pincer.utils.snowflake.Snowflake`]
+        ID of the voice channel client
+        wants to join (null if disconnecting).
 
-    self_mute:
-        is the client muted
+    self_mute : bool
+        Is the client muted.
 
-    self_deaf:
-        is the client deafened
+    self_deaf : bool
+        Is the client deafened.
     """
+
     guild_id: Snowflake
     self_mute: bool
     self_deaf: bool
@@ -129,21 +137,25 @@ class UpdateVoiceState(APIObject, GuildProperty):
 
 
 class StatusType(Enum):
-    """online:
+    """
+    Attributes
+    ----------
+    online :
         Online
 
-    dnd:
+    dnd :
         Do Not Disturb
 
-    idle:
+    idle :
         AFK
 
-    invisible:
+    invisible :
         Invisible and shown as offline
 
-    offline:
+    offline :
         Offline
     """
+
     online = auto()
     dnd = auto()
     idle = auto()
@@ -155,20 +167,23 @@ class StatusType(Enum):
 class UpdatePresence(APIObject):
     """Sent by the client to indicate a presence or status update.
 
-    since:
-        unix time (in milliseconds) of when the client went idle,
-        or null if the client is not idle
+    Attributes
+    ----------
+    since : :class:`list`\\[:class:`~pincer.objects.events.presence.Activity`]
+        Unix time (in milliseconds) of when the client went idle,
+        or null if the client is not idle.
 
-    activities:
-        the user's activities
+    activities : :class:`~pincer.objects.events.gateway_commands.StatusType`
+        The user's activities.
 
-    status:
-        the user's new status
+    status : :class:`bool`
+        The user's new status.
 
-    afk:
-        whether the client is afk
+    afk : :class:`~typing.Optional`\\[:class:`int`]
+        Whether the client is afk.
     """
-    activities: List[Activity]
+
+    activities: list[Activity]
     status: StatusType
     afk: bool
     since: Optional[int] = None

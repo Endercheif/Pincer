@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def guild_role_delete_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, GuildRoleDeleteEvent]:
     """|coro|
 
     Middleware for the ``on_guild_role_delete`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the guild role delete event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.guild.GuildRoleDeleteEvent`]
-        ``on_guild_role_delete`` and a ``GuildRoleDeleteEvent``
     """  # noqa: E501
 
     event = GuildRoleDeleteEvent.from_dict(payload.data)

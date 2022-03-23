@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def channel_update_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, Channel]:
     """|coro|
 
     Middleware for the ``on_channel_update`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the channel update event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.channel.channel.Channel`]
-        ``on_channel_update`` and a ``Channel``
     """
 
     channel = Channel.from_dict(payload.data)

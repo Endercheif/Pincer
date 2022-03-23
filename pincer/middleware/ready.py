@@ -14,7 +14,6 @@ from ..exceptions import InvalidPayload
 from ..objects.user.user import User
 
 if TYPE_CHECKING:
-    from typing import Tuple
     from ..utils.types import Coro
     from ..client import Client
     from ..core.gateway import Gateway
@@ -23,22 +22,19 @@ if TYPE_CHECKING:
 
 async def on_ready_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-) -> Tuple[str]:
+) -> tuple[str]:
     """|coro|
 
     Middleware for the ``on_ready`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the stage instance create event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`]
-        ``on_ready``
     """
 
     gateway.set_session_id(payload.data.get("session_id"))

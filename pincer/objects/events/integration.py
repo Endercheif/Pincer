@@ -19,13 +19,14 @@ class IntegrationDeleteEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    id: :class:`~pincer.utils.snowflake.Snowflake`
-        integration id
-    guild_id: :class:`~pincer.utils.snowflake.Snowflake`
-        id of the guild
-    application_id: APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
-        id of the bot/OAuth2 application for this discord integration
+    id : :class:`~pincer.utils.snowflake.Snowflake`
+        integration ID.
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
+    application_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        ID of the bot/OAuth2 application for this discord integration.
     """
+
     id: Snowflake
     guild_id: Snowflake
     application_id: APINullable[Snowflake] = MISSING
@@ -38,15 +39,16 @@ class IntegrationCreateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    id : :class:`Snowflake`
-        integration id
+    id : :class:`~pincer.utils.snowflake.Snowflake`
+        integration ID
 
-    guild_id : :class:`Snowflake`
-        id of the guild
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
 
-    application_id : APINullable[:class:`Snowflake`]
-        id of the bot/OAuth2 application for this discord integration
+    application_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        ID of the bot/OAuth2 application for this discord integration.
     """
+
     id: Snowflake
     guild_id: Snowflake
     application_id: APINullable[Snowflake] = MISSING
@@ -59,15 +61,16 @@ class IntegrationUpdateEvent(APIObject, GuildProperty):
 
     Attributes
     ----------
-    id : :class:`Snowflake`
-        integration id
+    id : :class:`~pincer.utils.snowflake.Snowflake`
+        integration ID.
 
-    guild_id : :class:`Snowflake`
-        id of the guild
+    guild_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the guild.
 
-    application_id : APINullable[:class:`Snowflake`]
-        id of the bot/OAuth2 application for this discord integration
+    application_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        ID of the bot/OAuth2 application for this discord integration.
     """
+
     id: Snowflake
     guild_id: Snowflake
     application_id: APINullable[Snowflake] = MISSING

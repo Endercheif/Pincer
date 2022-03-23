@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def stage_instance_create_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, StageInstance]:
     """|coro|
 
     Middleware for the ``on_stage_instance_create`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the stage instance create event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.guild.stage.StageInstance`]
-        ``on_stage_instance_create`` and a ``StageInstance``
     """
 
     stage = StageInstance.from_dict(payload.data)

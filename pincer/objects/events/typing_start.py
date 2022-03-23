@@ -20,17 +20,18 @@ class TypingStartEvent(APIObject, ChannelProperty, GuildProperty):
 
     Attributes
     ----------
-    channel_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the channel
-    user_id: :class:`~pincer.utils.snowflake.Snowflake`
-        Id of the user
-    timestamp: :class:`int`
+    channel_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the channel.
+    user_id : :class:`~pincer.utils.snowflake.Snowflake`
+        ID of the user.
+    timestamp : :class:`int`
         Unix time (in seconds) of when the user started typing
-    guild_id: APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
-        Id of the guild
-    member: APINullable[:class:`~pincer.objects.guild.member.GuildMember`]
-        The member who started typing if this happened in a guild
+    guild_id : APINullable[:class:`~pincer.utils.snowflake.Snowflake`]
+        ID of the guild.
+    member : APINullable[:class:`~pincer.objects.guild.member.GuildMember`]
+        The member who started typing if this happened in a guild.
     """
+
     channel_id: Snowflake
     user_id: Snowflake
     timestamp: int

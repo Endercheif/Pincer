@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def voice_settings_update_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, VoiceSettingsUpdateEvent]:
     """|coro|
 
     Middleware for the ``on_voice_settings_update`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the voice settings update event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.VoiceSettingsUpdateEvent`]
-        ``on_voice_settings_update`` and a ``VoiceSettingsUpdateEvent``
     """  # noqa: E501
     return (
         "on_voice_settings_update",

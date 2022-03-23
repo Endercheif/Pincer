@@ -8,7 +8,7 @@ to join a game.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from ..objects.events.activity import ActivityJoinEvent
 from ..utils.types import Coro
@@ -21,22 +21,19 @@ if TYPE_CHECKING:
 
 async def activity_join_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, ActivityJoinEvent]:
     """|coro|
 
     Middleware for the ``on_activity_join`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the activity join event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.activity.ActivityJoinEvent`]
-        ``on_activity_join`` and an ``ActivityJoinEvent``
     """  # noqa: E501
     return (
         "on_activity_join",

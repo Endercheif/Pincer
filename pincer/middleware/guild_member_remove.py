@@ -20,22 +20,19 @@ if TYPE_CHECKING:
 
 async def guild_member_remove_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, GuildMemberRemoveEvent]:
     """|coro|
 
     Middleware for the ``on_guild_member_remove`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the guild member remove event.
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.objects.events.guild.GuildMemberRemoveEvent`]
-        ``on_guild_member_remove`` and a ``GuildMemberRemoveEvent``
     """
 
     return (

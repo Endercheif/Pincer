@@ -18,22 +18,19 @@ if TYPE_CHECKING:
 
 async def integration_delete_middleware(
     self: Client, gateway: Gateway, payload: GatewayDispatch
-):
+) -> tuple[str, IntegrationDeleteEvent]:
     """|coro|
 
     Middleware for the ``on_integration_delete`` event.
 
     Parameters
     ----------
-    payload : :class:`~pincer.core.gateway.GatewayDispatch`
+    self :
+        The client.
+    payload :
         The data received from the integration delete event
-    gateway : :class:`~pincer.core.gateway.Gateway`
+    gateway :
         The gateway for the current shard.
-
-    Returns
-    -------
-    Tuple[:class:`str`, :class:`~pincer.events.integration.IntegrationDeleteEvent`]
-        ``on_integration_delete`` and an ``IntegrationDeleteEvent``
     """  # noqa: E501
     return (
         "on_integration_delete",
