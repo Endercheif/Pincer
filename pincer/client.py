@@ -33,7 +33,9 @@ from . import __package__
 from .commands import ChatCommandHandler
 from .core import HTTPClient
 from .core.gateway import GatewayInfo, Gateway
+
 from .exceptions import InvalidEventName, GatewayConnectionError
+
 from .middleware import middleware
 from .objects import (
     Role,
@@ -47,6 +49,8 @@ from .objects import (
     UserMessage,
     Connection,
     File,
+    StageInstance,
+    PrivacyLevel,
 )
 from .objects.guild.channel import GroupDMChannel
 from .utils import APIObject
@@ -455,7 +459,7 @@ class Client(Interactable, CogManager):
     def get_shard(
         self,
         guild_id: Optional[Snowflake] = None,
-        num_shards: Optional[int] = None
+        num_shards: Optional[int] = None,
     ) -> Gateway:
         """
         Returns the shard receiving events for a specified guild_id.
@@ -1094,5 +1098,125 @@ class Client(Interactable, CogManager):
         for pack in packs:
             yield StickerPack.from_dict(pack)
 
+    async def create_stage(
+        self,
+        channel_id: int,
+        topic: str,
+        privacy_level: Optional[PrivacyLevel] = None,
+        reason: Optional[str] = None,
+    ) -> StageInstance:
+        """|coro|
+
+        Parameters
+        ----------
+        channel_id : :class:`int`
+            The id of the Stage channel
+        topic : :class:`str`
+            The topic of the Stage instance (1-120 characters)
+        privacy_level : Optional[:class:`~pincer.objects.guild.stage.PrivacyLevel`]
+            The privacy level of the Stage instance (default :data:`GUILD_ONLY`)
+        reason : Optional[:class:`str`]
+            The reason for creating the Stage instance
+
+        Returns
+        -------
+        :class:`~pincer.objects.guild.stage.StageInstance`
+            The Stage instance created
+        """
+
+        data = {
+            "channel_id": channel_id,
+            "topic": topic,
+            "privacy_level": privacy_level,
+        }
+
+        return await self.http.post(  # type: ignore
+            "stage-instances", remove_none(data), headers={"reason": reason}
+        )
+
+    async def get_stage(self, _id: int) -> StageInstance:
+        """|coro|
+        Gets the stage instance associated with the Stage channel, if it exists
+
+        Parameters
+        ----------
+        _id : int
+            The ID of the stage to get
+
+        Returns
+        -------
+        :class:`~pincer.objects.guild.stage.StageInstance`
+            The stage instance
+        """
+        return await StageInstance.from_id(self, _id)
+
+    async def modify_stage(
+        self,
+        _id: int,
+        topic: Optional[str] = None,
+        privacy_level: Optional[PrivacyLevel] = None,
+        reason: Optional[str] = None,
+    ):
+        """|coro|
+        Updates fields of an existing Stage instance.
+        Requires the user to be a moderator of the Stage channel.
+
+        Parameters
+        ----------
+        _id : int
+            The ID of the stage to modify
+        topic : Optional[:class:`str`]
+            The topic of the Stage instance (1-120 characters)
+        privacy_level : Optional[:class:`~pincer.objects.guild.stage.PrivacyLevel`]
+            The privacy level of the Stage instance
+        reason : Optional[:class:`str`]
+            The reason for the modification
+        """
+
+        await self.http.patch(
+            f"stage-instances/{_id}",
+            remove_none({"topic": topic, "privacy_level": privacy_level}),
+            headers={"reason": reason},
+        )
+
+    async def delete_stage(self, _id: int, reason: Optional[str] = None):
+        """|coro|
+        Deletes the Stage instance.
+        Requires the user to be a moderator of the Stage channel.
+
+        Parameters
+        ----------
+        _id : int
+            The ID of the stage to delete
+        reason : Optional[:class:`str`]
+            The reason for the deletion
+        """
+        await self.http.delete(
+            f"stage-instances/{_id}", headers={"reason": reason}
+        )
+
+    async def crosspost_message(self, channel_id: int, message_id: int) -> UserMessage:
+        """|coro|
+        Crosspost a message in a News Channel to following channels.
+
+        This endpoint requires the ``SEND_MESSAGES`` permission,
+        if the current user sent the message, or additionally the
+        ``MANAGE_MESSAGES`` permission, for all other messages,
+        to be present for the current user.
+
+        Parameters
+        ----------
+        channel_id : int
+            ID of the news channel that the message is in.
+        message_id : int
+            ID of the message to crosspost.
+
+        Returns
+        -------
+        :class:`~pincer.objects.message.UserMessage`
+            The crossposted message
+        """
+
+        return await self._http.post(f"channels/{channel_id}/{message_id}/crosspost")
 
 Bot = Client
